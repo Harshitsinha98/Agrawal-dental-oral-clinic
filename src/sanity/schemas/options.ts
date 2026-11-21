@@ -13,6 +13,7 @@ export const iconOptions = [
   { title: "Filling", value: "filling" },
   { title: "Whitening", value: "whitening" },
   { title: "Braces", value: "braces" },
+  { title: "Laser", value: "laser" },
   { title: "Mouth / oral care", value: "mouth" },
   { title: "Check-up (mirror)", value: "checkup" },
   { title: "Tooth pain", value: "pain" },
@@ -20,6 +21,21 @@ export const iconOptions = [
   { title: "Sterilisation (steam)", value: "steam" },
   { title: "Gloves / hygiene", value: "hygiene" },
   { title: "Package / sealed", value: "sealed" },
+  { title: "Award", value: "award" },
+  { title: "Building / clinic", value: "building" },
+  { title: "Calendar", value: "calendar" },
+  { title: "Camera / photos", value: "camera" },
+  { title: "Clock", value: "clock" },
+  { title: "Graduation cap", value: "graduation" },
+  { title: "Helping hands", value: "heart" },
+  { title: "Map pin", value: "map" },
+  { title: "Microscope", value: "microscope" },
+  { title: "Phone", value: "phone" },
+  { title: "Video", value: "video" },
+  { title: "Smile", value: "smile" },
+  { title: "Sparkles", value: "sparkles" },
+  { title: "Star", value: "star" },
+  { title: "People", value: "users" },
 ];
 
 function label(hhmm: string) {
@@ -48,7 +64,8 @@ export const dayOptions = [
 
 export const galleryCategories = [
   { title: "Clinic", value: "clinic" },
-  { title: "Team", value: "team" },
+  { title: "Doctors & team", value: "team" },
   { title: "Treatment", value: "treatment" },
-  { title: "Events & camps", value: "events" },
+  { title: "Awards", value: "awards" },
+  { title: "Camps & community", value: "events" },
 ];

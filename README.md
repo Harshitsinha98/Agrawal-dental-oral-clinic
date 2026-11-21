@@ -16,16 +16,18 @@ npm run build
 - All content comes from Sanity project `7sqg0qba`, dataset `production`.
 - Until a document is published in Sanity, the site shows the starting content from `src/content/defaults.ts`, so it never renders empty.
 - `npm run seed` copies that starting content into Sanity once, so the doctor opens the Studio to filled-in forms. It needs an Editor token (see below). It never overwrites existing documents unless you pass `--replace`. Use `npm run seed -- --dry` to print the documents without writing anything.
-- Photos are uploaded in the Studio and served from Sanity's image CDN, cropped around the focus point the editor sets. Empty photo slots show a soft placeholder tile.
+- Photos are uploaded in the Studio and served from Sanity's image CDN, cropped around the focus point the editor sets. Until a slot is filled in Sanity, the clinic's own photos bundled in `public/images/clinic/` (converted from `/images`) are shown, and patient videos come from `public/videos/`.
+- `npm run seed` uploads those bundled photos and videos to Sanity too. The dataset currently holds test content from setup (a placeholder "Dr. Agrawal", placeholder timings, two test photos in the gallery). To replace it with the real content in one go: `SANITY_API_WRITE_TOKEN=… npm run seed -- --replace`. This overwrites any edits made in the Studio.
 
 | Studio section | Controls |
 |---|---|
-| Home page | Top banner (heading, highlighted word, photos), and the order / visibility of every home section |
-| Clinic details, timings & WhatsApp | Name, logo, address, phone, **booking WhatsApp number**, weekly timings, notice bar, Google rating, social links |
+| Home page | Banner slides (heading, highlighted words, text, photo, button, badge), the numbers strip, a small video card, and the order / text / visibility of every section: three quick cards, "How can we help you today?", patient videos, why patients trust us, quick booking form, treatment tiles, doctors, clinic tour, awards, camps (with camp request form), link tiles, FAQ, timings |
+| Clinic details, timings & WhatsApp | Name, logo, address, phones, **booking WhatsApp number**, weekly timings, notice bar, Google rating, social links, footer heading, banner photos of the inner pages |
 | Treatments | One document per treatment page: summary, photo, steps, aftercare, FAQs, SEO |
 | Doctors | Photo, degrees, speciality, experience, bio |
 | Gallery & before/after | Photos with categories (drag to reorder), before/after pairs (only shown when "patient has given permission" is ticked) |
-| Patient reviews, Questions, About page | As named |
+| Patient reviews, Questions | As named |
+| About page | Story, highlights, the "Our journey" timeline, and the headings / booking box on that page |
 
 ## Booking
 
@@ -44,6 +46,9 @@ npm run build
 | `src/app/studio/` | Embedded Studio |
 | `src/app/api/revalidate/` | Webhook that refreshes the site on publish |
 | `src/components/ui/` | Buttons, icons, motion helpers, image component |
+| `src/components/fx/` | Animated effects (aurora, word rotate, marquee, tilt card, timeline, text reveal, border beam), adapted from 21st.dev / Aceternity UI / Magic UI patterns and built on Motion |
+| `src/content/photos.ts` | The bundled clinic photo library with descriptions and blur placeholders |
+| `.kiro/steering/ui-ux-pro-max/` | UI/UX Pro Max design skill (installed with `npx uipro-cli init --ai kiro`) |
 
 ## Setup checklist
 
@@ -60,12 +65,11 @@ npm run build
 
 ## Still to confirm with the clinic
 
-Search for `CONFIRM` in `src/content/defaults.ts`.
+Search for `CONFIRM` in `src/content/defaults.ts`. Doctors, degrees, phone numbers, email, address and timings come from the clinic's signboard and "Know your doctor" brochure.
 
-- Phone number and **booking WhatsApp number** (Google profile shows only "…246 19777")
-- Weekly timings. Only "closed Sunday, opens 10 am" is known from Google; the default 10–2 and 5–9 is a placeholder.
-- Doctor's full name, degrees, registration number, experience and photo
-- The full list of treatments offered
+- Which number takes **WhatsApp bookings** (9424619777 is used for now)
+- Dental council registration numbers
 - The sterilisation steps shown on the home page
+- Patient permission for the video reviews before going live
 - Logo file (a typeset wordmark with a red tooth mark is used until then)
 - Final domain for `NEXT_PUBLIC_SITE_URL`

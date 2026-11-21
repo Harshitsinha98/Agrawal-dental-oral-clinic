@@ -16,20 +16,20 @@ export default async function BookPage({ searchParams }: { searchParams: Promise
   const [{ treatment }, settings, treatments] = await Promise.all([searchParams, getSettings(), getTreatments()]);
   return (
     <>
-      <PageHero title="Book a visit" intro="Fill this in and press Send on WhatsApp. The clinic will reply with a confirmed time, usually within clinic hours." crumbs={[{ href: "/book", label: "Book" }]}>
-        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink-soft">
-          <OpenStatus hours={settings.hours} />
+      <PageHero title="Book a visit" intro="Fill this in and press Send on WhatsApp. The clinic will reply with a confirmed time, usually within clinic hours." crumbs={[{ href: "/book", label: "Book" }]} eyebrow="Appointments" image={settings.pageImages?.book}>
+        <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/70">
+          <OpenStatus hours={settings.hours} tone="dark" />
           <span className="inline-flex items-center gap-2">
-            <MapPin className="size-4 text-brand-500" />
+            <MapPin className="size-4 text-gold-300" />
             {settings.address.split(",").slice(0, 2).join(",")}
           </span>
           <span className="inline-flex items-center gap-2">
-            <Clock className="size-4 text-brand-500" />
+            <Clock className="size-4 text-gold-300" />
             Takes about a minute
           </span>
         </div>
       </PageHero>
-      <section className="pb-24">
+      <section className="pb-24 pt-14">
         <div className="container-page">
           <BookingForm
             treatments={treatments.map((t) => ({ slug: t.slug, title: t.title }))}

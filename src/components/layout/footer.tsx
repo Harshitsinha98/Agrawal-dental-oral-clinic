@@ -4,6 +4,7 @@ import type { Settings, Treatment } from "@/lib/types";
 import { formatSessions, weekHours } from "@/lib/hours";
 import { formatPhone, telHref, waHref } from "@/lib/utils";
 import { FacebookIcon, InstagramIcon, WhatsAppIcon, YouTubeIcon } from "@/components/ui/icons";
+import { Aurora } from "@/components/fx/aurora";
 import { Logo } from "./logo";
 import { NAV } from "@/lib/nav";
 
@@ -14,6 +15,7 @@ export function Footer({ settings, treatments }: { settings: Settings; treatment
     { href: s.facebook, label: "Facebook", Icon: FacebookIcon },
     { href: s.youtube, label: "YouTube", Icon: YouTubeIcon },
   ].filter((x) => x.href);
+  const phones = [s.phone, ...(s.otherPhones ?? [])].filter((p): p is string => Boolean(p));
 
   // Group consecutive days with the same timings: "Mon – Sat".
   const groups: { days: string; time: string }[] = [];
@@ -25,20 +27,35 @@ export function Footer({ settings, treatments }: { settings: Settings; treatment
   }
 
   return (
-    <footer className="relative overflow-hidden bg-brand-950 pb-28 text-white/80 md:pb-10">
-      <svg aria-hidden viewBox="0 0 1440 60" preserveAspectRatio="none" className="absolute inset-x-0 top-0 h-10 w-full fill-canvas">
-        <path d="M0 0h1440v8C1100 58 340 58 0 8Z" />
-      </svg>
+    <footer className="relative isolate overflow-hidden bg-brand-950 pb-28 text-white/75 md:pb-10">
+      <Aurora intensity="soft" className="-z-10" />
+      <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-300/60 to-transparent" />
 
-      <div className="container-page grid gap-12 pt-24 md:grid-cols-12">
+      <div className="container-page pt-20">
+        {s.footerHeading && (
+          <p className="font-display max-w-3xl text-4xl font-medium leading-tight text-white sm:text-5xl">
+            {s.footerHighlight && s.footerHeading.includes(s.footerHighlight) ? (
+              <>
+                {s.footerHeading.slice(0, s.footerHeading.indexOf(s.footerHighlight))}
+                <em className="text-gold italic">{s.footerHighlight}</em>
+                {s.footerHeading.slice(s.footerHeading.indexOf(s.footerHighlight) + s.footerHighlight.length)}
+              </>
+            ) : (
+              s.footerHeading
+            )}
+          </p>
+        )}
+      </div>
+
+      <div className="container-page mt-14 grid gap-12 border-t border-white/10 pt-14 md:grid-cols-12">
         <div className="md:col-span-4">
           <Logo logo={s.logo} name={s.clinicName} invert />
-          {s.tagline && <p className="mt-5 max-w-xs leading-relaxed text-white/65">{s.tagline}</p>}
+          {s.tagline && <p className="mt-5 max-w-xs leading-relaxed text-white/60">{s.tagline}</p>}
           {social.length > 0 && (
             <ul className="mt-6 flex gap-2">
               {social.map(({ href, label, Icon }) => (
                 <li key={label}>
-                  <a href={href!} target="_blank" rel="noopener noreferrer" aria-label={label} className="grid size-10 place-items-center rounded-full bg-white/8 text-white transition-colors hover:bg-white/15">
+                  <a href={href!} target="_blank" rel="noopener noreferrer" aria-label={label} className="grid size-11 place-items-center rounded-full bg-white/8 text-white ring-1 ring-white/10 transition-colors hover:bg-gold-300 hover:text-brand-950">
                     <Icon />
                   </a>
                 </li>
@@ -49,8 +66,8 @@ export function Footer({ settings, treatments }: { settings: Settings; treatment
 
         <div className="grid grid-cols-2 gap-8 md:col-span-4">
           <div>
-            <h2 className="text-sm font-semibold text-white">Clinic</h2>
-            <ul className="mt-4 space-y-2.5 text-[0.9375rem]">
+            <h2 className="eyebrow text-gold-300">Clinic</h2>
+            <ul className="mt-5 space-y-2.5 text-[0.9375rem]">
               {NAV.slice(1).map((n) => (
                 <li key={n.href}>
                   <Link href={n.href} className="transition-colors hover:text-white">
@@ -66,9 +83,9 @@ export function Footer({ settings, treatments }: { settings: Settings; treatment
             </ul>
           </div>
           <div>
-            <h2 className="text-sm font-semibold text-white">Treatments</h2>
-            <ul className="mt-4 space-y-2.5 text-[0.9375rem]">
-              {treatments.slice(0, 7).map((t) => (
+            <h2 className="eyebrow text-gold-300">Treatments</h2>
+            <ul className="mt-5 space-y-2.5 text-[0.9375rem]">
+              {treatments.slice(0, 8).map((t) => (
                 <li key={t.slug}>
                   <Link href={`/treatments/${t.slug}`} className="transition-colors hover:text-white">
                     {t.title}
@@ -80,36 +97,42 @@ export function Footer({ settings, treatments }: { settings: Settings; treatment
         </div>
 
         <div className="space-y-5 text-[0.9375rem] md:col-span-4">
-          <h2 className="text-sm font-semibold text-white">Visit</h2>
+          <h2 className="eyebrow text-gold-300">Visit</h2>
           <p className="flex gap-3">
-            <MapPin className="mt-0.5 size-5 shrink-0 text-mint-300" />
+            <MapPin className="mt-0.5 size-5 shrink-0 text-gold-300" />
             <span>
               {s.address}
-              {s.landmark && <span className="block text-white/55">{s.landmark}</span>}
+              {s.landmark && <span className="block text-white/50">{s.landmark}</span>}
             </span>
           </p>
-          {s.phone && (
-            <a href={telHref(s.phone)} className="flex gap-3 hover:text-white">
-              <Phone className="size-5 shrink-0 text-mint-300" />
-              {formatPhone(s.phone)}
-            </a>
+          {phones.length > 0 && (
+            <p className="flex gap-3">
+              <Phone className="mt-0.5 size-5 shrink-0 text-gold-300" />
+              <span className="flex flex-col gap-1">
+                {phones.map((p) => (
+                  <a key={p} href={telHref(p)} className="hover:text-white">
+                    {formatPhone(p)}
+                  </a>
+                ))}
+              </span>
+            </p>
           )}
           {s.whatsapp && (
             <a href={waHref(s.whatsapp)} target="_blank" rel="noopener noreferrer" className="flex gap-3 hover:text-white">
-              <WhatsAppIcon className="text-mint-300" />
+              <WhatsAppIcon className="text-gold-300" />
               WhatsApp {formatPhone(s.whatsapp)}
             </a>
           )}
           {s.email && (
             <a href={`mailto:${s.email}`} className="flex gap-3 hover:text-white">
-              <Mail className="size-5 shrink-0 text-mint-300" />
+              <Mail className="size-5 shrink-0 text-gold-300" />
               {s.email}
             </a>
           )}
           <dl className="grid grid-cols-[auto_1fr] gap-x-5 gap-y-1.5 border-t border-white/10 pt-5">
             {groups.map((g) => (
               <div key={g.days} className="contents">
-                <dt className="text-white/55">{g.days}</dt>
+                <dt className="text-white/50">{g.days}</dt>
                 <dd>{g.time}</dd>
               </div>
             ))}

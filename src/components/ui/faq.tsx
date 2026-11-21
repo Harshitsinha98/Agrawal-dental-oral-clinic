@@ -6,8 +6,8 @@ import { Plus } from "lucide-react";
 import type { QA } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-export function Faq({ items, className }: { items: QA[]; className?: string }) {
-  const [open, setOpen] = useState<number | null>(0);
+export function Faq({ items, className, initialOpen = 0 }: { items: QA[]; className?: string; initialOpen?: number | null }) {
+  const [open, setOpen] = useState<number | null>(initialOpen);
   const id = useId();
   if (!items.length) return null;
 
@@ -26,7 +26,7 @@ export function Faq({ items, className }: { items: QA[]; className?: string }) {
                 className="flex w-full items-center justify-between gap-6 px-6 py-5 text-left text-[1.0625rem] font-semibold text-ink transition-colors hover:text-brand-700 sm:px-7"
               >
                 {item.question}
-                <span className={cn("grid size-8 shrink-0 place-items-center rounded-full border transition-all duration-300", isOpen ? "rotate-45 border-brand-600 bg-brand-600 text-white" : "border-line text-ink-mute")}>
+                <span className={cn("grid size-8 shrink-0 place-items-center rounded-full border transition-all duration-300", isOpen ? "rotate-45 border-brand-950 bg-brand-950 text-gold-200" : "border-line text-ink-mute")}>
                   <Plus className="size-4" />
                 </span>
               </button>

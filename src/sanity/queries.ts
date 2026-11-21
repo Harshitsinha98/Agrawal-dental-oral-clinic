@@ -3,15 +3,19 @@ import { defineQuery } from "next-sanity";
 // Every image is projected the same way: the asset with its blur placeholder and size.
 const IMG = `{..., asset->{_id, url, metadata{lqip, dimensions}}}`;
 const SEO = `seo{title, description, image${IMG}}`;
+const VIDEO = `{_key, name, caption, "url": file.asset->url, poster${IMG}}`;
 
-export const settingsQuery = defineQuery(`*[_id == "settings"][0]{..., logo${IMG}, ${SEO}}`);
+export const settingsQuery = defineQuery(`*[_id == "settings"][0]{..., logo${IMG}, pageImages{treatments${IMG}, gallery${IMG}, reviews${IMG}, contact${IMG}, book${IMG}}, ${SEO}}`);
 
 export const homepageQuery = defineQuery(`*[_id == "homepage"][0]{
-  hero{..., image${IMG}, secondImage${IMG}},
+  hero{..., image${IMG}, video${VIDEO}, slides[]{..., image${IMG}}},
   sections[]{
     ...,
     photos[]${IMG},
-    items[]{..., "treatmentSlug": treatment->slug.current}
+    image${IMG},
+    items[]{..., "treatmentSlug": treatment->slug.current},
+    videos[defined(file.asset)]${VIDEO},
+    video${VIDEO}
   },
   ${SEO}
 }`);

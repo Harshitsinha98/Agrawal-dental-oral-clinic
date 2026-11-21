@@ -12,6 +12,7 @@ import type { Img } from "@/lib/types";
 import { galleryCategories } from "@/sanity/schemas/options";
 import { SanityImage, ImagePlaceholder } from "@/components/ui/sanity-image";
 import { cn } from "@/lib/utils";
+import { imgRatio } from "@/lib/image";
 
 type Photo = NonNullable<Img>;
 
@@ -71,9 +72,9 @@ export function GalleryGrid({ photos }: { photos: Photo[] }) {
               role="tab"
               aria-selected={filter === t.value}
               onClick={() => setFilter(t.value)}
-              className={cn("relative rounded-full px-4 py-2 text-sm font-semibold transition-colors", filter === t.value ? "text-white" : "text-ink-soft hover:text-ink")}
+              className={cn("relative min-h-10 rounded-full px-4 py-2 text-sm font-semibold transition-colors", filter === t.value ? "text-gold-100" : "text-ink-soft hover:text-ink")}
             >
-              {filter === t.value && <motion.span layoutId="gallery-tab" className="absolute inset-0 -z-0 rounded-full bg-brand-600" transition={{ type: "spring", bounce: 0.2, duration: 0.5 }} />}
+              {filter === t.value && <motion.span layoutId="gallery-tab" className="absolute inset-0 -z-0 rounded-full bg-brand-950" transition={{ type: "spring", bounce: 0.2, duration: 0.5 }} />}
               <span className="relative">{t.title}</span>
             </button>
           ))}
@@ -83,14 +84,14 @@ export function GalleryGrid({ photos }: { photos: Photo[] }) {
       <motion.ul layout className="columns-2 gap-3 sm:columns-3 sm:gap-4 [&>li]:mb-3 sm:[&>li]:mb-4">
         <AnimatePresence mode="popLayout">
           {shown.map((p, i) => {
-            const ratio = p.asset?.metadata?.dimensions?.aspectRatio ?? 1;
+            const ratio = imgRatio(p);
             return (
               <motion.li key={p._key ?? i} layout initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.94 }} transition={{ duration: 0.35 }} className="break-inside-avoid">
                 <button type="button" onClick={() => setIndex(i)} className="group relative block w-full overflow-hidden rounded-3xl bg-white" style={{ aspectRatio: ratio }} aria-label={`Open photo: ${p.alt || p.caption || `photo ${i + 1}`}`}>
                   <SanityImage image={p} sizes="(min-width: 640px) 33vw, 50vw" className="transition-transform duration-700 ease-out-soft group-hover:scale-105" />
-                  {p.caption && (
-                    <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 to-transparent p-4 pt-10 text-left text-sm font-semibold text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      {p.caption}
+                  {(p.caption || p.alt) && (
+                    <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/75 to-transparent p-4 pt-10 text-left text-sm font-semibold text-white opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      {p.caption || p.alt}
                     </span>
                   )}
                 </button>
@@ -130,7 +131,7 @@ export function GalleryGrid({ photos }: { photos: Photo[] }) {
             >
               <SanityImage image={current} sizes="100vw" className="!object-contain" />
               <figcaption className="absolute -bottom-10 inset-x-0 text-center text-sm text-white/80">
-                {current.caption} <span className="text-white/50">{(index ?? 0) + 1} / {shown.length}</span>
+                {current.caption || current.alt} <span className="text-white/50">{(index ?? 0) + 1} / {shown.length}</span>
               </figcaption>
             </motion.figure>
 

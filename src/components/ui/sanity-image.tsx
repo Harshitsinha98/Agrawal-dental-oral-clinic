@@ -1,9 +1,10 @@
 "use client";
 
 /**
- * A Sanity photo served from Sanity's image CDN at the right size, cropped to the
- * doctor's chosen focus point (hotspot). Without a photo it shows a soft tile, so
- * empty slots never look broken. The parent must be `relative` with a size.
+ * A photo from Sanity's image CDN at the right size, cropped to the doctor's chosen
+ * focus point (hotspot), or a photo bundled with the site (`image.local`) until the
+ * slot is filled in Sanity. Without either it shows a soft tile, so empty slots never
+ * look broken. The parent must be `relative` with a size.
  */
 
 import Image from "next/image";
@@ -24,13 +25,32 @@ type Props = {
   priority?: boolean;
   className?: string;
   placeholderIcon?: string;
+  /** CSS object-position for bundled photos, e.g. "50% 20%". */
+  position?: string;
 };
 
-export function SanityImage({ image, alt, aspect, sizes = "100vw", priority, className, placeholderIcon }: Props) {
+export function SanityImage({ image, alt, aspect, sizes = "100vw", priority, className, placeholderIcon, position }: Props) {
+  if (image?.local?.src && !image.asset?._id) {
+    const l = image.local;
+    return (
+      <Image
+        fill
+        src={l.src}
+        alt={alt ?? image.alt ?? ""}
+        sizes={sizes}
+        priority={priority}
+        placeholder={l.blur ? "blur" : "empty"}
+        blurDataURL={l.blur}
+        style={{ objectPosition: l.position ?? position ?? "50% 50%" }}
+        className={cn("object-cover", className)}
+      />
+    );
+  }
+
   if (!image?.asset?._id) return <ImagePlaceholder icon={placeholderIcon} />;
 
   const lqip = image.asset.metadata?.lqip;
-  const pos = image.hotspot ? `${image.hotspot.x * 100}% ${image.hotspot.y * 100}%` : "50% 50%";
+  const pos = image.hotspot ? `${image.hotspot.x * 100}% ${image.hotspot.y * 100}%` : (position ?? "50% 50%");
 
   return (
     <Image
