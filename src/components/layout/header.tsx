@@ -1,7 +1,8 @@
 "use client";
 
 /**
- * Floating header. Transparent at the top, becomes a frosted pill once you scroll.
+ * Floating header. Transparent with white text over the dark page tops, becomes a
+ * frosted white pill once you scroll.
  * The active page is marked with a sliding pill (shared layout animation).
  * On phones the menu opens as a full sheet with links that stagger in.
  */
@@ -29,6 +30,7 @@ export function Header({ name, logo, phone }: { name: string; logo?: Img; phone?
     document.documentElement.style.overflow = open ? "hidden" : "";
   }, [open]);
 
+  const dark = !scrolled && !open;
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
@@ -37,11 +39,11 @@ export function Header({ name, logo, phone }: { name: string; logo?: Img; phone?
         <div
           className={cn(
             "mx-auto flex h-16 max-w-[1240px] items-center justify-between gap-4 rounded-full px-3 pl-4 transition-all duration-500 ease-out-soft sm:pl-5",
-            scrolled || open ? "border border-white/70 bg-white/85 shadow-soft backdrop-blur-xl" : "border border-transparent",
+            dark ? "border border-transparent" : "border border-white/70 bg-white/85 shadow-soft backdrop-blur-xl",
           )}
         >
           <Link href="/" aria-label={`${name}, home`} className="shrink-0">
-            <Logo logo={logo} name={name} />
+            <Logo logo={logo} name={name} invert={dark} />
           </Link>
 
           <nav aria-label="Main" className="hidden lg:block">
@@ -51,9 +53,9 @@ export function Header({ name, logo, phone }: { name: string; logo?: Img; phone?
                   <Link
                     href={item.href}
                     aria-current={isActive(item.href) ? "page" : undefined}
-                    className={cn("relative rounded-full px-4 py-2 text-[0.9375rem] font-medium transition-colors", isActive(item.href) ? "text-brand-700" : "text-ink-soft hover:text-ink")}
+                    className={cn("relative rounded-full px-4 py-2 text-[0.9375rem] font-medium transition-colors", isActive(item.href) ? (dark ? "text-white" : "text-brand-800") : dark ? "text-white/70 hover:text-white" : "text-ink-soft hover:text-ink")}
                   >
-                    {isActive(item.href) && <motion.span layoutId="nav-pill" className="absolute inset-0 -z-10 rounded-full bg-brand-50" transition={{ type: "spring", bounce: 0.2, duration: 0.5 }} />}
+                    {isActive(item.href) && <motion.span layoutId="nav-pill" className={cn("absolute inset-0 -z-10 rounded-full", dark ? "bg-white/10 ring-1 ring-white/15" : "bg-gold-50 ring-1 ring-gold-200")} transition={{ type: "spring", bounce: 0.2, duration: 0.5 }} />}
                     {item.label}
                   </Link>
                 </li>
@@ -63,12 +65,12 @@ export function Header({ name, logo, phone }: { name: string; logo?: Img; phone?
 
           <div className="flex items-center gap-2">
             {phone && (
-              <a href={telHref(phone)} className="hidden items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold text-ink-soft transition-colors hover:text-brand-700 xl:flex">
-                <Phone className="size-4" />
+              <a href={telHref(phone)} className={cn("hidden items-center gap-2 rounded-full px-3 py-2 text-sm font-semibold transition-colors xl:flex", dark ? "text-white/80 hover:text-white" : "text-ink-soft hover:text-brand-700")}>
+                <Phone className={cn("size-4", dark ? "text-gold-300" : "text-gold-500")} />
                 {formatPhone(phone)}
               </a>
             )}
-            <Button href="/book" size="md" className="hidden sm:inline-flex" magnetic>
+            <Button href="/book" size="md" variant={dark ? "gold" : "primary"} className="hidden sm:inline-flex" magnetic>
               Book a visit
             </Button>
             <button
@@ -77,7 +79,7 @@ export function Header({ name, logo, phone }: { name: string; logo?: Img; phone?
               aria-expanded={open}
               aria-controls="mobile-menu"
               aria-label={open ? "Close menu" : "Open menu"}
-              className="grid size-11 place-items-center rounded-full bg-white text-ink shadow-soft lg:hidden"
+              className={cn("grid size-11 place-items-center rounded-full lg:hidden", dark ? "glass text-white" : "bg-white text-ink shadow-soft")}
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.span key={open ? "x" : "m"} initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.18 }}>
@@ -103,9 +105,9 @@ export function Header({ name, logo, phone }: { name: string; logo?: Img; phone?
               <ul className="divide-y divide-line">
                 {NAV.map((item) => (
                   <motion.li key={item.href} variants={{ hidden: { opacity: 0, x: -16 }, show: { opacity: 1, x: 0 } }}>
-                    <Link href={item.href} className={cn("flex items-center justify-between py-4 text-2xl font-bold", isActive(item.href) ? "text-brand-600" : "text-ink")}>
+                    <Link href={item.href} className={cn("font-display flex items-center justify-between py-4 text-3xl font-medium", isActive(item.href) ? "text-gold-600" : "text-ink")}>
                       {item.label}
-                      {isActive(item.href) && <span className="size-2 rounded-full bg-mint-500" />}
+                      {isActive(item.href) && <span className="size-2 rounded-full bg-gold-400" />}
                     </Link>
                   </motion.li>
                 ))}

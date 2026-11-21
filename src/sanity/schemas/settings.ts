@@ -50,6 +50,14 @@ export const settings = defineType({
       validation: (r) => r.regex(/^\d{10,11}$/, { name: "phone" }).error("Only digits, 10 or 11 of them, without +91 or spaces"),
     }),
     defineField({
+      name: "otherPhones",
+      title: "Other phone numbers",
+      type: "array",
+      group: "contact",
+      description: "Landline or second mobile, shown on the contact page and footer. Digits only, e.g. 07552682870.",
+      of: [defineArrayMember({ type: "string", validation: (r) => r.regex(/^\d{10,11}$/, { name: "phone" }).error("Only digits, 10 or 11 of them") })],
+    }),
+    defineField({
       name: "whatsapp",
       title: "WhatsApp number for bookings",
       type: "string",

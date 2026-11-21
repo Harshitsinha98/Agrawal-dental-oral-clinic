@@ -133,4 +133,17 @@ export const qa = defineType({
   preview: { select: { title: "question", subtitle: "answer" } },
 });
 
-export const objectTypes = [photo, richText, seo, session, dayHours, step, qa];
+export const videoClip = defineType({
+  name: "videoClip",
+  title: "Video",
+  type: "object",
+  fields: [
+    defineField({ name: "file", title: "Video file (MP4)", type: "file", options: { accept: "video/mp4,video/webm" }, validation: (r) => r.required() }),
+    defineField({ name: "poster", title: "Cover photo", description: "Shown before the video plays.", type: "photo" }),
+    defineField({ name: "name", title: "Patient's name (optional)", type: "string" }),
+    defineField({ name: "caption", title: "One-line caption (optional)", type: "string" }),
+  ],
+  preview: { select: { title: "name", subtitle: "caption", media: "poster" }, prepare: ({ title, subtitle, media }) => ({ title: title || "Video", subtitle, media }) },
+});
+
+export const objectTypes = [photo, richText, seo, session, dayHours, step, qa, videoClip];

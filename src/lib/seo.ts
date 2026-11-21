@@ -8,7 +8,7 @@ import { siteUrl } from "./utils";
 const builder = createImageUrlBuilder({ projectId, dataset });
 
 export function pageMetadata({ title, description, path, seo }: { title: string; description?: string | null; path: string; seo?: Seo }): Metadata {
-  const image = seo?.image?.asset?._id ? builder.image(seo.image).width(1200).height(630).fit("crop").auto("format").url() : undefined;
+  const image = seo?.image?.asset?._id ? builder.image(seo.image).width(1200).height(630).fit("crop").auto("format").url() : (seo?.image?.local?.src ?? undefined);
   const t = seo?.title || title;
   const d = seo?.description || description || undefined;
   return {

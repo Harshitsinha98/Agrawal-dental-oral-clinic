@@ -31,6 +31,13 @@ const drawn: Record<string, (p: P) => React.ReactElement> = {
       <Tooth />
     </Svg>
   ),
+  laser: (p) => (
+    <Svg {...p}>
+      <Tooth t="translate(4 5) scale(0.78)" />
+      <path d="M2.5 2.5 8 8" />
+      <path d="M2 6.5h2.5M6.5 2v2.5" />
+    </Svg>
+  ),
   pain: (p) => (
     <Svg {...p}>
       <Tooth t="translate(-1.5 2) scale(0.85)" />

@@ -13,6 +13,7 @@ export const iconOptions = [
   { title: "Filling", value: "filling" },
   { title: "Whitening", value: "whitening" },
   { title: "Braces", value: "braces" },
+  { title: "Laser", value: "laser" },
   { title: "Mouth / oral care", value: "mouth" },
   { title: "Check-up (mirror)", value: "checkup" },
   { title: "Tooth pain", value: "pain" },
@@ -48,7 +49,8 @@ export const dayOptions = [
 
 export const galleryCategories = [
   { title: "Clinic", value: "clinic" },
-  { title: "Team", value: "team" },
+  { title: "Doctors & team", value: "team" },
   { title: "Treatment", value: "treatment" },
-  { title: "Events & camps", value: "events" },
+  { title: "Awards", value: "awards" },
+  { title: "Camps & community", value: "events" },
 ];

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTreatments } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 import { PageHero } from "@/components/layout/page-hero";
+import { photo } from "@/content/photos";
 import { TreatmentCard } from "@/components/treatments/treatment-card";
 import { Stagger, StaggerItem } from "@/components/ui/motion";
 import { Cta } from "@/components/home/cta";
@@ -18,10 +19,12 @@ export default async function TreatmentsPage() {
   return (
     <>
       <PageHero
+        eyebrow="What we treat"
         title="Treatments"
+        image={photo("treatment-hall")}
         intro="What each treatment involves, how many visits it takes and how to look after your teeth afterwards. If you're not sure which one you need, a check-up is the place to start."
       />
-      <section className="pb-8">
+      <section className="pb-8 pt-16 sm:pt-20">
         <Stagger className="container-page grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {treatments.map((t) => (
             <StaggerItem key={t.slug}>

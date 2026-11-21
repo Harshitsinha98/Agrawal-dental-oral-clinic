@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 export function Stars({ value, className }: { value: number; className?: string }) {
   return (
-    <span className={cn("flex text-amber-400", className)} role="img" aria-label={`${value} out of 5 stars`}>
+    <span className={cn("flex text-gold-400", className)} role="img" aria-label={`${value} out of 5 stars`}>
       {[0, 1, 2, 3, 4].map((i) => (
         <Star key={i} className="size-4" fill={i < Math.round(value) ? "currentColor" : "none"} aria-hidden />
       ))}
@@ -52,19 +52,19 @@ export function ReviewMarquee({ reviews }: { reviews: Review[] }) {
   );
 }
 
-export function GoogleRatingCard({ rating, count, url }: { rating?: number | null; count?: number | null; url?: string | null }) {
+export function GoogleRatingCard({ rating, count, url, dark = false }: { rating?: number | null; count?: number | null; url?: string | null; dark?: boolean }) {
   if (!rating) return null;
   return (
-    <div className="flex flex-col items-start gap-5 rounded-[2rem] border border-line bg-white p-7 shadow-soft sm:flex-row sm:items-center sm:justify-between">
+    <div className={cn("flex flex-col items-start gap-5 rounded-[2rem] border p-7 sm:flex-row sm:items-center sm:justify-between", dark ? "glass" : "border-line bg-white shadow-soft")}>
       <div className="flex items-center gap-5">
-        <p className="text-5xl font-extrabold tracking-tight text-ink">{rating.toFixed(1)}</p>
+        <p className={cn("font-display text-6xl", dark ? "text-gold" : "text-ink")}>{rating.toFixed(1)}</p>
         <div>
-          <Stars value={rating} />
-          <p className="mt-1 text-sm text-ink-soft">{count ? `${count} reviews on Google` : "Rating on Google"}</p>
+          <Stars value={rating} className={dark ? "text-gold-300" : "text-gold-400"} />
+          <p className={cn("mt-1 text-sm", dark ? "text-white/70" : "text-ink-soft")}>{count ? `${count}+ reviews on Google` : "Rating on Google"}</p>
         </div>
       </div>
       {url && (
-        <a href={url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 font-semibold text-brand-600 hover:text-brand-800">
+        <a href={url} target="_blank" rel="noopener noreferrer" className={cn("inline-flex min-h-11 items-center gap-1.5 font-semibold", dark ? "text-gold-200 hover:text-white" : "text-brand-700 hover:text-gold-700")}>
           Read reviews on Google
           <ArrowUpRight className="size-4" />
         </a>

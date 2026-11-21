@@ -5,10 +5,11 @@ export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
 
 export const telHref = (phone?: string | null) => (phone ? `tel:+91${phone.replace(/^0/, "")}` : undefined);
 
-/** "9876543210" → "+91 98765 43210" */
+/** "9876543210" → "+91 98765 43210", "07552682870" → "0755 268 2870" */
 export function formatPhone(phone?: string | null) {
   if (!phone) return "";
   if (phone.length === 10) return `+91 ${phone.slice(0, 5)} ${phone.slice(5)}`;
+  if (phone.length === 11 && phone.startsWith("0")) return `${phone.slice(0, 4)} ${phone.slice(4, 7)} ${phone.slice(7)}`;
   return phone;
 }
 

@@ -31,6 +31,23 @@ export const aboutPage = defineType({
         }),
       ],
     }),
+    defineField({
+      name: "milestones",
+      title: "Our journey (timeline)",
+      type: "array",
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "milestone",
+          fields: [
+            defineField({ name: "year", title: "Year or label", type: "string", description: "e.g. 2007, or \"Today\"", validation: (r) => r.required().max(10) }),
+            defineField({ name: "title", type: "string", validation: (r) => r.required() }),
+            defineField({ name: "text", type: "text", rows: 2 }),
+          ],
+          preview: { select: { title: "title", subtitle: "year" } },
+        }),
+      ],
+    }),
     defineField({ name: "seo", title: "Google preview", type: "seo" }),
   ],
   preview: { prepare: () => ({ title: "About page" }) },

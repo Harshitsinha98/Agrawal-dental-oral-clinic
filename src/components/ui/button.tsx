@@ -13,16 +13,18 @@ import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { WhatsAppIcon } from "./icons";
 
-type Variant = "primary" | "whatsapp" | "outline" | "light" | "ghost";
+type Variant = "primary" | "gold" | "glass" | "whatsapp" | "outline" | "light" | "ghost";
 type Size = "md" | "lg";
 
 const base =
-  "group/btn relative isolate inline-flex select-none items-center justify-center gap-2.5 overflow-hidden rounded-full font-semibold transition-[background-color,color,box-shadow,border-color] duration-300 disabled:pointer-events-none disabled:opacity-50";
+  "group/btn relative isolate inline-flex select-none items-center justify-center gap-2.5 overflow-hidden rounded-full font-semibold transition-[background-color,color,box-shadow,border-color,filter] duration-300 disabled:pointer-events-none disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-brand-600 text-white shadow-[0_8px_20px_-8px_rgb(30_90_168/0.7)] hover:bg-brand-700",
+  primary: "bg-brand-900 text-white shadow-[0_10px_24px_-10px_rgb(8_23_52/0.8)] hover:bg-brand-800",
+  gold: "bg-[linear-gradient(135deg,#f1dca6,#cfa653_55%,#b88b3a)] text-brand-950 shadow-[0_10px_30px_-10px_rgb(207_166_83/0.9)] hover:brightness-105",
+  glass: "glass text-white hover:bg-white/15",
   whatsapp: "bg-whatsapp text-[#05391f] shadow-[0_8px_20px_-8px_rgb(18_140_126/0.7)] hover:bg-[#2fe072]",
-  outline: "border border-line bg-white text-ink hover:border-brand-300 hover:text-brand-700",
+  outline: "border border-line bg-white text-ink hover:border-gold-300 hover:text-brand-800",
   light: "bg-white text-brand-700 hover:bg-brand-50",
   ghost: "text-brand-700 hover:bg-brand-50",
 };
@@ -67,9 +69,9 @@ export function Button(props: AsLink | AsButton) {
     y.set(0);
   };
 
-  const showArrow = arrow ?? variant === "primary";
+  const showArrow = arrow ?? (variant === "primary" || variant === "gold");
   const showWa = wa ?? variant === "whatsapp";
-  const shines = variant === "primary" || variant === "whatsapp";
+  const shines = variant === "primary" || variant === "gold" || variant === "whatsapp";
 
   const inner = (
     <>
@@ -80,7 +82,7 @@ export function Button(props: AsLink | AsButton) {
       {icon}
       <span>{children}</span>
       {showArrow && (
-        <span aria-hidden className={cn("-mr-2 grid size-7 place-items-center rounded-full transition-transform duration-300 ease-out-soft group-hover/btn:translate-x-1", variant === "primary" ? "bg-white/15" : "bg-brand-50")}>
+        <span aria-hidden className={cn("-mr-2 grid size-7 place-items-center rounded-full transition-transform duration-300 ease-out-soft group-hover/btn:translate-x-1", variant === "primary" ? "bg-white/15" : variant === "gold" ? "bg-brand-950/10" : "bg-brand-50")}>
           <ArrowRight className="size-4" strokeWidth={2.2} />
         </span>
       )}

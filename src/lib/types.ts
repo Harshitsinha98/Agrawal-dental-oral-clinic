@@ -6,9 +6,13 @@ export type ImageAsset = {
   metadata?: { lqip?: string; dimensions?: { width: number; height: number; aspectRatio: number } };
 };
 
+/** A photo bundled with the site (public/), used until the slot is filled in Sanity. */
+export type LocalImage = { src: string; width: number; height: number; blur?: string };
+
 export type Img = {
   _key?: string;
   asset?: ImageAsset | null;
+  local?: LocalImage | null;
   hotspot?: { x: number; y: number; height: number; width: number };
   crop?: { top: number; bottom: number; left: number; right: number };
   alt?: string | null;
@@ -32,6 +36,8 @@ export type Settings = {
   mapsUrl?: string | null;
   notice?: { enabled?: boolean; text?: string | null } | null;
   phone?: string | null;
+  /** Landline and other numbers, shown on the contact page and footer. */
+  otherPhones?: string[] | null;
   whatsapp?: string | null;
   email?: string | null;
   hours: DayHours[];
@@ -90,16 +96,26 @@ export type Section =
   | (SectionBase & { _type: "reviewsSection" })
   | (SectionBase & { _type: "faqSection"; limit?: number | null })
   | (SectionBase & { _type: "visitSection" })
-  | (SectionBase & { _type: "ctaSection"; buttonLabel?: string | null });
+  | (SectionBase & { _type: "ctaSection"; buttonLabel?: string | null })
+  | (SectionBase & { _type: "awardsSection"; honours?: string[] | null; photos?: Img[] | null })
+  | (SectionBase & { _type: "communitySection"; points?: { _key?: string; title: string; text?: string | null }[] | null; photos?: Img[] | null; video?: Video | null })
+  | (SectionBase & { _type: "videoReviewsSection"; videos?: Video[] | null });
+
+export type Video = { _key?: string; url?: string | null; poster?: Img; name?: string | null; caption?: string | null };
+export type Milestone = { _key?: string; year: string; title: string; text?: string | null };
 
 export type Homepage = {
   hero: {
     eyebrow?: string | null;
     title: string;
     highlight?: string | null;
+    /** "Specialists in …" words that rotate under the heading. */
+    rotatingWords?: string[] | null;
     text?: string | null;
     image?: Img;
     secondImage?: Img;
+    /** Short silent clip in a floating card, e.g. a laser treatment. */
+    video?: Video | null;
     bookLabel?: string | null;
   };
   sections: Section[];
@@ -112,6 +128,7 @@ export type AboutPage = {
   image?: Img;
   body?: PortableTextBlock[] | null;
   highlights?: { _key?: string; title: string; text?: string | null }[] | null;
+  milestones?: Milestone[] | null;
   seo?: Seo;
 };
 

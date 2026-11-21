@@ -52,9 +52,17 @@ export const homepage = defineType({
           type: "string",
           description: "Must appear exactly in the heading, e.g. \"gentle\".",
         }),
+        defineField({
+          name: "rotatingWords",
+          title: "\"Specialists in …\" rotating words",
+          description: "Short phrases that take turns under the heading, e.g. \"dental implants\".",
+          type: "array",
+          of: [defineArrayMember({ type: "string", validation: (r) => r.max(28) })],
+        }),
         defineField({ name: "text", title: "Text under the heading", type: "text", rows: 3 }),
         defineField({ name: "image", title: "Main photo", type: "photo" }),
         defineField({ name: "secondImage", title: "Small second photo (optional)", type: "photo" }),
+        defineField({ name: "video", title: "Small video card (optional, plays silently)", description: "Use the caption for the label, e.g. \"Laser dentistry\".", type: "videoClip" }),
         defineField({ name: "bookLabel", title: "Booking button text", type: "string", initialValue: "Book on WhatsApp" }),
       ],
     }),
@@ -130,6 +138,29 @@ export const homepage = defineType({
         section("visitSection", "Timings & location"),
         section("ctaSection", "Booking call-to-action", [
           defineField({ name: "buttonLabel", title: "Button text", type: "string" }),
+        ]),
+        section("videoReviewsSection", "Video reviews", [
+          defineField({ name: "videos", title: "Videos", description: "Short phone videos of patients (MP4, under 20 MB each). Only with the patient's permission.", type: "array", of: [defineArrayMember({ type: "videoClip" })] }),
+        ]),
+        section("awardsSection", "Awards & honours", [
+          defineField({ name: "honours", title: "Honours (one per line)", type: "array", of: [defineArrayMember({ type: "string" })] }),
+          defineField({ name: "photos", title: "Photos of awards", type: "array", of: [defineArrayMember({ type: "photo" })] }),
+        ]),
+        section("communitySection", "Camps & community", [
+          defineField({
+            name: "points",
+            title: "Highlights",
+            type: "array",
+            of: [
+              defineArrayMember({
+                type: "object",
+                name: "point",
+                fields: [defineField({ name: "title", type: "string", validation: (r) => r.required() }), defineField({ name: "text", type: "string" })],
+              }),
+            ],
+          }),
+          defineField({ name: "photos", title: "Photos", type: "array", of: [defineArrayMember({ type: "photo" })] }),
+          defineField({ name: "video", title: "Short video (optional, plays silently)", type: "videoClip" }),
         ]),
       ],
     }),

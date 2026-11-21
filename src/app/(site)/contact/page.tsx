@@ -4,6 +4,7 @@ import { getFaqs, getSettings } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 import { formatPhone, telHref, waHref } from "@/lib/utils";
 import { PageHero } from "@/components/layout/page-hero";
+import { photo } from "@/content/photos";
 import { Visit } from "@/components/home/visit";
 import { Faq } from "@/components/ui/faq";
 import { WhatsAppIcon } from "@/components/ui/icons";
@@ -19,16 +20,16 @@ export default async function ContactPage() {
   const [s, faqs] = await Promise.all([getSettings(), getFaqs()]);
   const ways = [
     s.whatsapp && { href: waHref(s.whatsapp)!, label: "WhatsApp", value: formatPhone(s.whatsapp), icon: <WhatsAppIcon className="size-6" />, tone: "bg-mint-50 text-whatsapp-dark" },
-    s.phone && { href: telHref(s.phone)!, label: "Call", value: formatPhone(s.phone), icon: <Phone className="size-6" />, tone: "bg-brand-50 text-brand-600" },
-    s.email && { href: `mailto:${s.email}`, label: "Email", value: s.email, icon: <Mail className="size-6" />, tone: "bg-brand-50 text-brand-600" },
+    s.phone && { href: telHref(s.phone)!, label: "Call", value: formatPhone(s.phone), icon: <Phone className="size-6" />, tone: "bg-brand-950 text-gold-200" },
+    s.email && { href: `mailto:${s.email}`, label: "Email", value: s.email, icon: <Mail className="size-6" />, tone: "bg-gold-50 text-gold-700" },
   ].filter(Boolean) as { href: string; label: string; value: string; icon: React.ReactNode; tone: string }[];
 
   return (
     <>
-      <PageHero title="Contact & timings" intro="Call, send a WhatsApp message, or just walk in during clinic hours." crumbs={[{ href: "/contact", label: "Contact" }]} />
+      <PageHero title="Contact & timings" intro="Call, send a WhatsApp message, or just walk in during clinic hours." crumbs={[{ href: "/contact", label: "Contact" }]} eyebrow="Get in touch" image={photo("clinic-exterior-night")} />
 
       {ways.length > 0 && (
-        <section className="pb-6">
+        <section className="pb-6 pt-14">
           <Stagger className="container-page grid gap-4 sm:grid-cols-3">
             {ways.map((w) => (
               <StaggerItem key={w.label}>
