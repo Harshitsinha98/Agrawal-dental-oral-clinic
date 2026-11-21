@@ -84,6 +84,22 @@ export const settings = defineType({
     defineField({ name: "facebook", title: "Facebook link", type: "url", group: "google" }),
     defineField({ name: "youtube", title: "YouTube link", type: "url", group: "google" }),
 
+    defineField({ name: "footerHeading", title: "Big line at the top of the footer", type: "string", group: "clinic" }),
+    defineField({ name: "footerHighlight", title: "Word(s) in that line to colour gold", type: "string", group: "clinic" }),
+    defineField({
+      name: "pageImages",
+      title: "Background photos for page banners",
+      type: "object",
+      group: "clinic",
+      options: { collapsible: true, collapsed: true },
+      fields: [
+        defineField({ name: "treatments", title: "Treatments page", type: "photo" }),
+        defineField({ name: "gallery", title: "Gallery page", type: "photo" }),
+        defineField({ name: "reviews", title: "Reviews page", type: "photo" }),
+        defineField({ name: "contact", title: "Contact page", type: "photo" }),
+        defineField({ name: "book", title: "Booking page", type: "photo" }),
+      ],
+    }),
     defineField({ name: "seo", title: "Default Google preview", type: "seo", group: "seo" }),
   ],
   preview: { prepare: () => ({ title: "Clinic details" }) },

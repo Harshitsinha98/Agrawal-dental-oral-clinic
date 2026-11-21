@@ -14,6 +14,7 @@ import { SanityImage } from "@/components/ui/sanity-image";
 import { Section, SectionHeading } from "@/components/ui/section";
 import { Timeline } from "@/components/fx/timeline";
 import { photo } from "@/content/photos";
+import { hasImg } from "@/lib/image";
 
 export async function generateMetadata(): Promise<Metadata> {
   const a = await getAbout();
@@ -36,7 +37,7 @@ export default async function AboutPage() {
           <Reveal className="relative lg:sticky lg:top-28">
             <div aria-hidden className="absolute -inset-3 rounded-[2.5rem] border border-gold-300/60" />
             <div className="relative aspect-[5/4] overflow-hidden rounded-[2rem] bg-white shadow-lift">
-              <SanityImage image={photo("doctors-consultation-desk")} sizes="(min-width: 1024px) 50vw, 100vw" />
+              <SanityImage image={hasImg(home.hero.image) ? home.hero.image : photo("doctors-consultation-desk")} sizes="(min-width: 1024px) 50vw, 100vw" />
             </div>
           </Reveal>
           <div>
@@ -66,7 +67,7 @@ export default async function AboutPage() {
 
       {doctors.length > 0 && (
         <Section tone="white">
-          <SectionHeading eyebrow="The doctors" heading={doctors.length > 1 ? "Meet our specialists" : "Your dentist"} highlight="specialists" align="center" />
+          <SectionHeading eyebrow="The doctors" heading={about.doctorsHeading || (doctors.length > 1 ? "Meet our specialists" : "Your dentist")} highlight="specialists" align="center" />
           <div className="space-y-28">
             {doctors.map((doc, i) => (
               <DoctorProfile key={doc._id ?? doc.name} doctor={doc} index={i} />
@@ -77,7 +78,7 @@ export default async function AboutPage() {
 
       {milestones.length > 0 && (
         <Section>
-          <SectionHeading eyebrow="Our journey" heading="Two decades of learning, teaching and caring" highlight="caring" />
+          <SectionHeading eyebrow="Our journey" heading={about.journeyHeading || "Our journey"} highlight="caring" />
           <Timeline items={milestones} />
         </Section>
       )}
@@ -97,7 +98,7 @@ export default async function AboutPage() {
         </div>
       )}
 
-      <Cta heading="Come and see the clinic" intro="Send a booking request on WhatsApp and we'll reply with a time that suits you." phone={settings.phone} image={photo("reception-lounge")} />
+      <Cta heading={about.ctaHeading || "Come and see the clinic"} intro={about.ctaText} phone={settings.phone} image={settings.pageImages?.book} />
     </>
   );
 }

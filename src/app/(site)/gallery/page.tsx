@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { getGallery } from "@/lib/content";
+import { getGallery, getSettings } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 import { PageHero } from "@/components/layout/page-hero";
-import { photo } from "@/content/photos";
 import { GalleryGrid } from "@/components/gallery/gallery-grid";
 import { BeforeAfterSlider } from "@/components/gallery/before-after";
 import { Section, SectionHeading } from "@/components/ui/section";
@@ -13,10 +12,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function GalleryPage() {
-  const g = await getGallery();
+  const [g, settings] = await Promise.all([getGallery(), getSettings()]);
   return (
     <>
-      <PageHero title={g.heading || "Gallery"} intro={g.intro} crumbs={[{ href: "/gallery", label: "Gallery" }]} eyebrow="Gallery" image={photo("corridor-awards-wall")} />
+      <PageHero title={g.heading || "Gallery"} intro={g.intro} crumbs={[{ href: "/gallery", label: "Gallery" }]} eyebrow="Gallery" image={settings.pageImages?.gallery} />
       <section className="py-16 sm:py-20">
         <div className="container-page">
           <GalleryGrid photos={g.photos} />

@@ -122,7 +122,7 @@ d.defaultDoctors.forEach((doc, i) => docs.push({ _id: `doctor-${i + 1}`, _type: 
 docs.push({
   _id: "homepage",
   _type: "homepage",
-  hero: d.defaultHomepage.hero,
+  hero: { ...d.defaultHomepage.hero, slides: typed("heroSlide", d.defaultHomepage.hero.slides), counters: typed("counter", d.defaultHomepage.hero.counters) },
   sections: d.defaultHomepage.sections.map((s) => {
     const out: Record<string, unknown> = { ...s };
     if (s._type === "concernsSection")
@@ -134,6 +134,10 @@ docs.push({
     if (s._type === "statsSection") out.items = typed("stat", s.items);
     if (s._type === "safetySection") out.steps = typed("step", s.steps);
     if (s._type === "communitySection") out.points = typed("point", s.points);
+    if (s._type === "quickCardsSection") out.items = typed("quickCard", s.items);
+    if (s._type === "whyTrustSection") out.boxes = typed("trustBox", s.boxes);
+    if (s._type === "moreLinksSection") out.items = typed("linkTile", s.items);
+    if (s._type === "doctorsSection") out.points = typed("teamPoint", s.points);
     return out;
   }),
 });

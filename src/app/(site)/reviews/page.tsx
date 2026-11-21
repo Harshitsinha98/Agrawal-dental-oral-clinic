@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { getHomepage, getReviews, getSettings } from "@/lib/content";
 import * as d from "@/content/defaults";
 import { VideoReviews } from "@/components/reviews/video-reviews";
-import { photo } from "@/content/photos";
 import { pageMetadata } from "@/lib/seo";
 import { PageHero } from "@/components/layout/page-hero";
 import { GoogleRatingCard, ReviewCard } from "@/components/reviews/reviews";
@@ -21,7 +20,7 @@ export default async function ReviewsPage() {
   const videos = section?._type === "videoReviewsSection" && section.videos?.length ? section.videos : fallback?._type === "videoReviewsSection" ? (fallback.videos ?? []) : [];
   return (
     <>
-      <PageHero eyebrow="Patient stories" title={r.heading || "Patient reviews"} intro={r.intro} crumbs={[{ href: "/reviews", label: "Reviews" }]} image={photo("dr-kavita-child-patient")} />
+      <PageHero eyebrow="Patient stories" title={r.heading || "Patient reviews"} intro={r.intro} crumbs={[{ href: "/reviews", label: "Reviews" }]} image={s.pageImages?.reviews} />
       <section className="py-16 sm:py-20">
         <div className="container-page">
           <GoogleRatingCard rating={s.googleRating} count={s.googleReviewCount} url={s.googleReviewsUrl} />

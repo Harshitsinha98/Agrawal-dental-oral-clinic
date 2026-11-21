@@ -4,7 +4,6 @@ import { getFaqs, getSettings } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 import { formatPhone, telHref, waHref } from "@/lib/utils";
 import { PageHero } from "@/components/layout/page-hero";
-import { photo } from "@/content/photos";
 import { Visit } from "@/components/home/visit";
 import { Faq } from "@/components/ui/faq";
 import { WhatsAppIcon } from "@/components/ui/icons";
@@ -26,7 +25,7 @@ export default async function ContactPage() {
 
   return (
     <>
-      <PageHero title="Contact & timings" intro="Call, send a WhatsApp message, or just walk in during clinic hours." crumbs={[{ href: "/contact", label: "Contact" }]} eyebrow="Get in touch" image={photo("clinic-exterior-night")} />
+      <PageHero title="Contact & timings" intro="Call, send a WhatsApp message, or just walk in during clinic hours." crumbs={[{ href: "/contact", label: "Contact" }]} eyebrow="Get in touch" image={s.pageImages?.contact} />
 
       {ways.length > 0 && (
         <section className="pb-6 pt-14">

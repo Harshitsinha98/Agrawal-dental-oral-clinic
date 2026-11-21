@@ -41,7 +41,7 @@ export function SanityImage({ image, alt, aspect, sizes = "100vw", priority, cla
         priority={priority}
         placeholder={l.blur ? "blur" : "empty"}
         blurDataURL={l.blur}
-        style={{ objectPosition: position ?? "50% 50%" }}
+        style={{ objectPosition: l.position ?? position ?? "50% 50%" }}
         className={cn("object-cover", className)}
       />
     );

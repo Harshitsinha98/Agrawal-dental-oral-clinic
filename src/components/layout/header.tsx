@@ -30,7 +30,8 @@ export function Header({ name, logo, phone }: { name: string; logo?: Img; phone?
     document.documentElement.style.overflow = open ? "hidden" : "";
   }, [open]);
 
-  const dark = !scrolled && !open;
+  // The home banner is light; every other page starts on a dark banner.
+  const dark = !scrolled && !open && pathname !== "/";
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
@@ -39,7 +40,7 @@ export function Header({ name, logo, phone }: { name: string; logo?: Img; phone?
         <div
           className={cn(
             "mx-auto flex h-16 max-w-[1240px] items-center justify-between gap-4 rounded-full px-3 pl-4 transition-all duration-500 ease-out-soft sm:pl-5",
-            dark ? "border border-transparent" : "border border-white/70 bg-white/85 shadow-soft backdrop-blur-xl",
+            dark ? "border border-transparent" : scrolled || open ? "border border-white/70 bg-white/85 shadow-soft backdrop-blur-xl" : "border border-line/70 bg-white/70 backdrop-blur-xl",
           )}
         >
           <Link href="/" aria-label={`${name}, home`} className="shrink-0">

@@ -6,7 +6,7 @@
 
 import type { Img } from "@/lib/types";
 
-type LocalPhoto = { src: string; width: number; height: number; blur: string; alt: string; category: string };
+type LocalPhoto = { src: string; width: number; height: number; blur: string; alt: string; category: string; position?: string };
 
 export const PHOTOS = {
   "honour-agrawal-mahasabha": { src: "/images/clinic/honour-agrawal-mahasabha.webp", width: 1280, height: 960, alt: "Dr. Neeraj and Dr. Kavita Agrawal honoured on stage by the Madhya Pradesh Agrawal Mahasabha", category: "events", blur: "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADQAQCdASoQAAwAA4BaJbACdAEHP2HjAAD33wH6THLgA/w+Ue8hS7kWS576O+DIBGkSJAs0aA3M99LED5XTrC2CBj5pjCvltL/MgvsMhrbBUyo5xkIQAA==" },
@@ -37,7 +37,7 @@ export const PHOTOS = {
   "reception-smile-wall": { src: "/images/clinic/reception-smile-wall.webp", width: 1600, height: 1200, alt: "Reception counter with the Smile wall and dental care products", category: "clinic", blur: "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAABQAgCdASoQAAwAA4BaJZwC7AEQ5W/Y+pQ6BoAA/gAovxBL90Lktrz5oxUzE16hv36hgjtnp3wKP3KTGfD0+SK1PPStLcWcBfGjcQ+HxXD6+gAA" },
   "camp-school-teaching": { src: "/images/clinic/camp-school-teaching.webp", width: 1280, height: 960, alt: "Teaching children how to brush at a school dental camp", category: "events", blur: "data:image/webp;base64,UklGRngAAABXRUJQVlA4IGwAAADwAQCdASoQAAwAA4BaJbACdACUkarXAIAA/o+iqYamBUIIzuq1ngc+9z9OK4FaOF1H6AmupA7T+6u87r6JReGpBhoWnRTX3V30TRk/xrYmMr4M6mrxAbOZrHNQmlGFBHwFTX9457znmJ8AAAA=" },
   "front-desk": { src: "/images/clinic/front-desk.webp", width: 1600, height: 1200, alt: "Front desk and waiting seats at the clinic", category: "clinic", blur: "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAQAgCdASoQAAwAA4BaJQBdgBjnAdPqFgAAAP3wBILMtxstyAsyttAfaL+PER/ILkX6Hkl5DV8x/DVUQaEB9PrduJY8JvJnpTxUtZGG4LCfhIioMHMG1kQ8G1CAY+AA" },
-  "dr-neeraj-office": { src: "/images/clinic/dr-neeraj-office.webp", width: 1600, height: 1200, alt: "Dr. Neeraj Agrawal at his desk", category: "team", blur: "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADwAQCdASoQAAwAA4BaJZwAAn/bjdSnEOgA/uGXhN7ydvklUbGOh/Si8VrtkmAFfGiwX6jMbte/b6RiSuU/YDtxpP14sPsJCDT3Vrn1vBzZFzY9KFKEcAAA" },
+  "dr-neeraj-office": { position: "64% 40%", src: "/images/clinic/dr-neeraj-office.webp", width: 1600, height: 1200, alt: "Dr. Neeraj Agrawal, periodontist and implantologist, at his clinic desk", category: "team", blur: "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADwAQCdASoQAAwAA4BaJZwAAn/bjdSnEOgA/uGXhN7ydvklUbGOh/Si8VrtkmAFfGiwX6jMbte/b6RiSuU/YDtxpP14sPsJCDT3Vrn1vBzZFzY9KFKEcAAA" },
   "operatory-chair": { src: "/images/clinic/operatory-chair.webp", width: 1600, height: 1200, alt: "Modern dental chair in the operatory", category: "clinic", blur: "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAAAQAgCdASoQAAwAA4BaJZwCw7D2MDjLqugAAP6YTM2eNa7hytFW4/hKdR+eKRe07q8M3z0vFHQUbOvFO/qY/lVDNh9yU/NIyFiyMAAA" },
   "camp-senior-citizens": { src: "/images/clinic/camp-senior-citizens.webp", width: 1280, height: 960, alt: "Free dental camp for senior citizens affected by the Bhopal gas tragedy", category: "events", blur: "data:image/webp;base64,UklGRnQAAABXRUJQVlA4IGgAAABQAgCdASoQAAwAA4BaJYgCw7YtzwO93Sz4rgAA/u3WqlXeVHZctzxZHrXW5l2HKCyam/uLhP36uq5RWR+UD0uYHNWKsKRF0rk7zLVwV7ACw6QXOqw9FpmW3iu2bIfnSvg00FqQFuAAAA==" },
   "awards-cabinet-ida": { src: "/images/clinic/awards-cabinet-ida.webp", width: 1200, height: 1600, alt: "Cabinet of trophies and an IDA Bhopal branch certificate", category: "awards", blur: "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADQAQCdASoMABAAA4BaJQBOgCDnwbFrVADiNT5leJwaeRyMXXBGhW/flcStRf8Fmiup88v+fdE9bmJRybs4V4/WQjb3SSGod6oUyATf2yAAAA==" },
@@ -50,7 +50,7 @@ export const PHOTOS = {
   "smile-therapy-wall": { src: "/images/clinic/smile-therapy-wall.webp", width: 1600, height: 1200, alt: "Waiting corner with the 'Smile, it's free therapy' wall", category: "clinic", blur: "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAAAwAgCdASoQAAwAA4BaJbACdAEeglda7JD2AAD+7jqg6GpwnJUvbWDX/r87crADNvB3326xWWp+TO+i3ql1+FnfuRnsTjB5QAA=" },
   "dr-kavita-portrait": { src: "/images/clinic/dr-kavita-portrait.webp", width: 960, height: 1280, alt: "Dr. Kavita Agrawal, oral medicine and radiology specialist", category: "team", blur: "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAAAwAgCdASoMABAAA4BaJYwCdAYvDaeaqepbAAD+CB9m7EW4d16zx0YGdKPLlKFC9k7HipiGEGGm78K1oJBECjlw1FbrTAsBpa6stFeEX9HbA7w9Bfc03gYRT5OFjXcN1qqn0cC9N4k0EgAA" },
   "felicitation": { src: "/images/clinic/felicitation.webp", width: 1600, height: 1200, alt: "Dr. Neeraj Agrawal being felicitated at an event", category: "events", blur: "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAADwAQCdASoQAAwAA4BaJbACdAC6z9Op/ygA/tYUcI8fiFjjB8IcKoZ9+/bQSofuws1IMgJHSJXBMYHczYsUuS33j/iH6pukLcbfkxru/exJXWzYmKEYUuAA" },
-  "dr-kavita-desk": { src: "/images/clinic/dr-kavita-desk.webp", width: 1200, height: 1600, alt: "Dr. Kavita Agrawal at her consultation desk", category: "team", blur: "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADQAQCdASoMABAAA4BaJZwAAmf67PWHEAD+2EyAhca1t3Jr9b091KXCmRX+Z7k55oo9r4RL4K5QEqvKHECdyw3Uma0N3m8JcStuvAkqQAA=" },
+  "dr-kavita-desk": { position: "48% 36%", src: "/images/clinic/dr-kavita-desk.webp", width: 1200, height: 1600, alt: "Dr. Kavita Agrawal, oral medicine specialist, at her consultation desk", category: "team", blur: "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADQAQCdASoMABAAA4BaJZwAAmf67PWHEAD+2EyAhca1t3Jr9b091KXCmRX+Z7k55oo9r4RL4K5QEqvKHECdyw3Uma0N3m8JcStuvAkqQAA=" },
   "laser-treatment": { src: "/videos/laser-treatment.webp", width: 576, height: 1024, alt: "Laser dental treatment in progress, the patient wearing protective glasses", category: "treatment", blur: "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAAAwAgCdASoJABAAA4BaJYgCdAEekKP4TQtaQAD5aT+TTnYNLyaz0tugiF/t0PnTvCDPovbcIGJMhmyH9z8gil3fMvycQQZH01qcBnvbt6sEAAAA" },
 } satisfies Record<string, LocalPhoto>;
 
@@ -59,7 +59,7 @@ export type PhotoName = keyof typeof PHOTOS;
 /** A library photo in the same shape as a Sanity image, so every component can render either. */
 export function photo(name: PhotoName, caption?: string): NonNullable<Img> {
   const p: LocalPhoto = PHOTOS[name];
-  return { _key: `local-${name}`, alt: p.alt, caption: caption ?? null, category: p.category, local: { src: p.src, width: p.width, height: p.height, blur: p.blur } };
+  return { _key: `local-${name}`, alt: p.alt, caption: caption ?? null, category: p.category, local: { src: p.src, width: p.width, height: p.height, blur: p.blur, position: p.position } };
 }
 
 export const photos = (...names: PhotoName[]) => names.map((n) => photo(n));

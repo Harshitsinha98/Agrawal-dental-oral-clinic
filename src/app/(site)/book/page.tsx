@@ -3,7 +3,6 @@ import { Clock, MapPin } from "lucide-react";
 import { getSettings, getTreatments } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 import { PageHero } from "@/components/layout/page-hero";
-import { photo } from "@/content/photos";
 import { BookingForm } from "@/components/booking/booking-form";
 import { OpenStatus } from "@/components/layout/open-status";
 
@@ -17,7 +16,7 @@ export default async function BookPage({ searchParams }: { searchParams: Promise
   const [{ treatment }, settings, treatments] = await Promise.all([searchParams, getSettings(), getTreatments()]);
   return (
     <>
-      <PageHero title="Book a visit" intro="Fill this in and press Send on WhatsApp. The clinic will reply with a confirmed time, usually within clinic hours." crumbs={[{ href: "/book", label: "Book" }]} eyebrow="Appointments" image={photo("reception-lounge")}>
+      <PageHero title="Book a visit" intro="Fill this in and press Send on WhatsApp. The clinic will reply with a confirmed time, usually within clinic hours." crumbs={[{ href: "/book", label: "Book" }]} eyebrow="Appointments" image={settings.pageImages?.book}>
         <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/70">
           <OpenStatus hours={settings.hours} tone="dark" />
           <span className="inline-flex items-center gap-2">

@@ -32,9 +32,19 @@ export function Footer({ settings, treatments }: { settings: Settings; treatment
       <div aria-hidden className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-300/60 to-transparent" />
 
       <div className="container-page pt-20">
-        <p className="font-display max-w-3xl text-4xl font-medium leading-tight text-white sm:text-5xl">
-          Specialist care for every <em className="text-gold italic">smile</em> in the family.
-        </p>
+        {s.footerHeading && (
+          <p className="font-display max-w-3xl text-4xl font-medium leading-tight text-white sm:text-5xl">
+            {s.footerHighlight && s.footerHeading.includes(s.footerHighlight) ? (
+              <>
+                {s.footerHeading.slice(0, s.footerHeading.indexOf(s.footerHighlight))}
+                <em className="text-gold italic">{s.footerHighlight}</em>
+                {s.footerHeading.slice(s.footerHeading.indexOf(s.footerHighlight) + s.footerHighlight.length)}
+              </>
+            ) : (
+              s.footerHeading
+            )}
+          </p>
+        )}
       </div>
 
       <div className="container-page mt-14 grid gap-12 border-t border-white/10 pt-14 md:grid-cols-12">

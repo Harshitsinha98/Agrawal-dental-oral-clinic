@@ -7,7 +7,7 @@ export type ImageAsset = {
 };
 
 /** A photo bundled with the site (public/), used until the slot is filled in Sanity. */
-export type LocalImage = { src: string; width: number; height: number; blur?: string };
+export type LocalImage = { src: string; width: number; height: number; blur?: string; /** Focus point as CSS object-position, e.g. "65% 30%". */ position?: string };
 
 export type Img = {
   _key?: string;
@@ -48,6 +48,11 @@ export type Settings = {
   instagram?: string | null;
   facebook?: string | null;
   youtube?: string | null;
+  /** Big line at the top of the footer, with the highlighted word in gold. */
+  footerHeading?: string | null;
+  footerHighlight?: string | null;
+  /** Background photos for the top banner of inner pages. */
+  pageImages?: { treatments?: Img; gallery?: Img; reviews?: Img; contact?: Img; book?: Img } | null;
   seo?: Seo;
 };
 
@@ -88,8 +93,12 @@ type SectionBase = { _key: string; enabled?: boolean | null; heading?: string | 
 export type Section =
   | (SectionBase & { _type: "concernsSection"; items?: { _key: string; label: string; icon?: string | null; treatmentSlug?: string | null }[] | null })
   | (SectionBase & { _type: "statsSection"; showGoogle?: boolean | null; items?: { _key: string; value: number; suffix?: string | null; label: string }[] | null })
-  | (SectionBase & { _type: "treatmentsSection"; onlyFeatured?: boolean | null })
-  | (SectionBase & { _type: "doctorsSection" })
+  | (SectionBase & { _type: "treatmentsSection"; onlyFeatured?: boolean | null; layout?: "tiles" | "cards" | null; buttonLabel?: string | null })
+  | (SectionBase & { _type: "doctorsSection"; points?: TeamPoint[] | null; buttonLabel?: string | null })
+  | (SectionBase & { _type: "quickCardsSection"; items?: QuickCard[] | null })
+  | (SectionBase & { _type: "whyTrustSection"; image?: Img; boxes?: TrustBox[] | null })
+  | (SectionBase & { _type: "bookingStripSection"; buttonLabel?: string | null })
+  | (SectionBase & { _type: "moreLinksSection"; items?: LinkTile[] | null })
   | (SectionBase & { _type: "clinicSection"; photos?: Img[] | null })
   | (SectionBase & { _type: "safetySection"; steps?: Step[] | null })
   | (SectionBase & { _type: "beforeAfterSection"; note?: string | null })
@@ -98,8 +107,34 @@ export type Section =
   | (SectionBase & { _type: "visitSection" })
   | (SectionBase & { _type: "ctaSection"; buttonLabel?: string | null })
   | (SectionBase & { _type: "awardsSection"; honours?: string[] | null; photos?: Img[] | null })
-  | (SectionBase & { _type: "communitySection"; points?: { _key?: string; title: string; text?: string | null }[] | null; photos?: Img[] | null; video?: Video | null })
+  | (SectionBase & {
+      _type: "communitySection";
+      points?: { _key?: string; title: string; text?: string | null }[] | null;
+      photos?: Img[] | null;
+      video?: Video | null;
+      formHeading?: string | null;
+      formText?: string | null;
+      buttonLabel?: string | null;
+    })
   | (SectionBase & { _type: "videoReviewsSection"; videos?: Video[] | null });
+
+export type QuickCard = { _key?: string; kind: "rating" | "visit" | "link"; title?: string | null; text?: string | null; buttonLabel?: string | null; link?: string | null };
+export type TrustBox = { _key?: string; title: string; icon?: string | null; points?: string[] | null };
+export type TeamPoint = { _key?: string; value: string; title: string; text?: string | null };
+export type LinkTile = { _key?: string; label: string; icon?: string | null; link: string };
+export type Counter = { _key?: string; value: string; label: string; icon?: string | null };
+export type HeroSlide = {
+  _key?: string;
+  eyebrow?: string | null;
+  title: string;
+  highlight?: string | null;
+  text?: string | null;
+  image?: Img;
+  buttonLabel?: string | null;
+  buttonLink?: string | null;
+  badge?: string | null;
+  badgeText?: string | null;
+};
 
 export type Video = { _key?: string; url?: string | null; poster?: Img; name?: string | null; caption?: string | null };
 export type Milestone = { _key?: string; year: string; title: string; text?: string | null };
@@ -109,14 +144,15 @@ export type Homepage = {
     eyebrow?: string | null;
     title: string;
     highlight?: string | null;
-    /** "Specialists in …" words that rotate under the heading. */
-    rotatingWords?: string[] | null;
     text?: string | null;
     image?: Img;
-    secondImage?: Img;
     /** Short silent clip in a floating card, e.g. a laser treatment. */
     video?: Video | null;
     bookLabel?: string | null;
+    /** Slides of the top banner. When empty, one slide is made from the fields above. */
+    slides?: HeroSlide[] | null;
+    /** Strip of numbers under the banner. */
+    counters?: Counter[] | null;
   };
   sections: Section[];
   seo?: Seo;
@@ -129,6 +165,10 @@ export type AboutPage = {
   body?: PortableTextBlock[] | null;
   highlights?: { _key?: string; title: string; text?: string | null }[] | null;
   milestones?: Milestone[] | null;
+  doctorsHeading?: string | null;
+  journeyHeading?: string | null;
+  ctaHeading?: string | null;
+  ctaText?: string | null;
   seo?: Seo;
 };
 

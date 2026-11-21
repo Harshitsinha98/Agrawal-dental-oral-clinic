@@ -20,6 +20,7 @@ export const getSettings = cache(async (): Promise<Settings> => {
   const doc = await fetchSanity<Partial<Settings>>(q.settingsQuery);
   const s = merge(d.defaultSettings, doc);
   if (!s.hours?.length) s.hours = d.defaultSettings.hours;
+  s.pageImages = merge(d.defaultSettings.pageImages ?? {}, s.pageImages ?? {});
   return s;
 });
 

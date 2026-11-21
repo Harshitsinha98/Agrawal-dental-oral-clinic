@@ -6,6 +6,7 @@ import { Reveal, Stagger, StaggerItem } from "@/components/ui/motion";
 import { AutoVideo } from "@/components/fx/auto-video";
 import { hasImg, imgUrl } from "@/lib/image";
 import { cn } from "@/lib/utils";
+import { QuickBooking } from "./quick-booking";
 
 const icons = [School, Users, HeartHandshake];
 
@@ -19,12 +20,15 @@ export function Community({
   points,
   photos,
   video,
+  form,
 }: {
   heading?: string | null;
   intro?: string | null;
   points: { _key?: string; title: string; text?: string | null }[];
   photos: Img[];
   video?: Video | null;
+  /** "Bring a dental camp to your workplace" request form. */
+  form?: { heading?: string | null; text?: string | null; buttonLabel?: string | null; whatsapp?: string | null } | null;
 }) {
   const pics = photos.filter(hasImg).slice(0, video?.url ? 4 : 5);
   return (
@@ -73,6 +77,8 @@ export function Community({
           })}
         </Stagger>
       )}
+
+      {form?.heading && <QuickBooking kind="camp" heading={form.heading} intro={form.text} buttonLabel={form.buttonLabel} whatsapp={form.whatsapp} className="mt-10" />}
     </Section>
   );
 }

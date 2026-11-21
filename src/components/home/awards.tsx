@@ -13,7 +13,7 @@ export function Awards({ heading, intro, honours, photos }: { heading?: string |
   if (!honours.length && !pics.length) return null;
 
   return (
-    <section className="relative isolate overflow-hidden bg-brand-950 py-24 text-white sm:py-32">
+    <section id="awards" className="relative isolate scroll-mt-20 overflow-hidden bg-brand-950 py-24 text-white sm:py-32">
       <Aurora intensity="soft" className="-z-10" />
       <div className="container-page grid items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
         <div>

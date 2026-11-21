@@ -21,13 +21,13 @@ npm run build
 
 | Studio section | Controls |
 |---|---|
-| Home page | Top banner (heading, highlighted words, rotating "Specialists in …" words, photos, small video card), and the order / visibility of every home section, including video reviews, awards & honours, and camps & community |
-| Clinic details, timings & WhatsApp | Name, logo, address, phone, **booking WhatsApp number**, weekly timings, notice bar, Google rating, social links |
+| Home page | Banner slides (heading, highlighted words, text, photo, button, badge), the numbers strip, a small video card, and the order / text / visibility of every section: three quick cards, "How can we help you today?", patient videos, why patients trust us, quick booking form, treatment tiles, doctors, clinic tour, awards, camps (with camp request form), link tiles, FAQ, timings |
+| Clinic details, timings & WhatsApp | Name, logo, address, phones, **booking WhatsApp number**, weekly timings, notice bar, Google rating, social links, footer heading, banner photos of the inner pages |
 | Treatments | One document per treatment page: summary, photo, steps, aftercare, FAQs, SEO |
 | Doctors | Photo, degrees, speciality, experience, bio |
 | Gallery & before/after | Photos with categories (drag to reorder), before/after pairs (only shown when "patient has given permission" is ticked) |
 | Patient reviews, Questions | As named |
-| About page | Story, highlights and the "Our journey" timeline |
+| About page | Story, highlights, the "Our journey" timeline, and the headings / booking box on that page |
 
 ## Booking
 
@@ -68,7 +68,6 @@ npm run build
 Search for `CONFIRM` in `src/content/defaults.ts`. Doctors, degrees, phone numbers, email, address and timings come from the clinic's signboard and "Know your doctor" brochure.
 
 - Which number takes **WhatsApp bookings** (9424619777 is used for now)
-- Dr. Kavita Agrawal's current years of experience (the brochure says "more than 12")
 - Dental council registration numbers
 - The sterilisation steps shown on the home page
 - Patient permission for the video reviews before going live

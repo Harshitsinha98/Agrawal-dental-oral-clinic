@@ -5,13 +5,14 @@ const IMG = `{..., asset->{_id, url, metadata{lqip, dimensions}}}`;
 const SEO = `seo{title, description, image${IMG}}`;
 const VIDEO = `{_key, name, caption, "url": file.asset->url, poster${IMG}}`;
 
-export const settingsQuery = defineQuery(`*[_id == "settings"][0]{..., logo${IMG}, ${SEO}}`);
+export const settingsQuery = defineQuery(`*[_id == "settings"][0]{..., logo${IMG}, pageImages{treatments${IMG}, gallery${IMG}, reviews${IMG}, contact${IMG}, book${IMG}}, ${SEO}}`);
 
 export const homepageQuery = defineQuery(`*[_id == "homepage"][0]{
-  hero{..., image${IMG}, secondImage${IMG}, video${VIDEO}},
+  hero{..., image${IMG}, video${VIDEO}, slides[]{..., image${IMG}}},
   sections[]{
     ...,
     photos[]${IMG},
+    image${IMG},
     items[]{..., "treatmentSlug": treatment->slug.current},
     videos[defined(file.asset)]${VIDEO},
     video${VIDEO}
