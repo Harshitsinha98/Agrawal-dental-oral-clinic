@@ -1,7 +1,8 @@
 import { UserIcon } from "@sanity/icons/User";
 import { ActivityIcon } from "@sanity/icons/Activity";
+import { DocumentTextIcon } from "@sanity/icons/DocumentText";
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { iconOptions } from "./options";
+import { blogCategories, iconOptions } from "./options";
 
 export const treatment = defineType({
   name: "treatment",
@@ -61,4 +62,56 @@ export const doctor = defineType({
   ],
   orderings: [{ title: "Position", name: "order", by: [{ field: "order", direction: "asc" }] }],
   preview: { select: { title: "name", subtitle: "role", media: "photo" } },
+});
+
+export const blogPost = defineType({
+  name: "blogPost",
+  title: "Blog post",
+  type: "document",
+  icon: DocumentTextIcon,
+  groups: [
+    { name: "main", title: "Post", default: true },
+    { name: "text", title: "Article" },
+    { name: "seo", title: "SEO" },
+  ],
+  fields: [
+    defineField({ name: "title", type: "string", group: "main", validation: (r) => r.required().max(110) }),
+    defineField({
+      name: "slug",
+      title: "Page address",
+      description: "Click Generate. This becomes /blog/…",
+      type: "slug",
+      group: "main",
+      options: { source: "title", maxLength: 80 },
+      validation: (r) => r.required(),
+    }),
+    defineField({
+      name: "excerpt",
+      title: "Short summary",
+      description: "Shown on the blog list and in Google. One or two sentences.",
+      type: "text",
+      rows: 3,
+      group: "main",
+      validation: (r) => r.required().max(220),
+    }),
+    defineField({ name: "cover", title: "Cover photo", type: "photo", group: "main" }),
+    defineField({ name: "category", type: "string", group: "main", options: { list: blogCategories }, initialValue: "Oral health", validation: (r) => r.required() }),
+    defineField({ name: "publishedAt", title: "Date", type: "datetime", group: "main", initialValue: () => new Date().toISOString(), validation: (r) => r.required() }),
+    defineField({ name: "author", title: "Written by", description: "Optional. Leave empty to show the clinic's name.", type: "reference", to: [{ type: "doctor" }], group: "main" }),
+    defineField({ name: "featured", title: "Show first on the blog page", type: "boolean", group: "main", initialValue: false }),
+    defineField({
+      name: "treatment",
+      title: "Related treatment",
+      description: "Adds a \"Book for this treatment\" button at the end of the article.",
+      type: "reference",
+      to: [{ type: "treatment" }],
+      group: "main",
+    }),
+    defineField({ name: "body", title: "Article", type: "articleBody", group: "text" }),
+    defineField({ name: "seo", title: "Google preview", type: "seo", group: "seo" }),
+  ],
+  orderings: [{ title: "Newest first", name: "dateDesc", by: [{ field: "publishedAt", direction: "desc" }] }],
+  preview: {
+    select: { title: "title", subtitle: "category", media: "cover" },
+  },
 });

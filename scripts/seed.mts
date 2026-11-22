@@ -153,6 +153,17 @@ docs.push({
   beforeAfter: d.defaultGallery.beforeAfter.map(({ _key, ...p }) => ({ _key, _type: "beforeAfterPair", ...p, consent: true })),
 });
 docs.push({ _id: "reviews", _type: "reviews", heading: d.defaultReviews.heading, intro: d.defaultReviews.intro });
+docs.push({ _id: "blogPage", _type: "blogPage", ...d.defaultBlogPage });
+for (const p of d.defaultBlogPosts) {
+  const { slug, treatmentSlug, ...rest } = p;
+  docs.push({
+    _id: `post-${slug}`,
+    _type: "blogPost",
+    ...rest,
+    slug: { _type: "slug", current: slug },
+    ...(treatmentSlug ? { treatment: { _type: "reference", _ref: treatmentId(treatmentSlug) } } : {}),
+  });
+}
 docs.push({ _id: "faqs", _type: "faqs", heading: d.defaultFaqs.heading, items: typed("qa", d.defaultFaqs.items) });
 
 if (!replace && !dry) {

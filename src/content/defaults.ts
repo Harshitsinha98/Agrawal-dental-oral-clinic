@@ -8,7 +8,7 @@
  * CONFIRM still needs checking with the clinic.
  */
 
-import type { AboutPage, Doctor, Faqs, Gallery, Homepage, Reviews, Settings, Treatment } from "@/lib/types";
+import type { AboutPage, BlogPage, BlogPost, Doctor, Faqs, Gallery, Homepage, Reviews, Settings, Treatment } from "@/lib/types";
 import type { PortableTextBlock } from "next-sanity";
 import { photo, photos } from "./photos";
 
@@ -621,6 +621,7 @@ export const defaultHomepage: Homepage = {
       ],
     },
     { _type: "reviewsSection", _key: key(), enabled: true, heading: "What patients say", intro: null },
+    { _type: "blogSection", _key: key(), enabled: true, heading: "Dental insights from our doctors' clinic", intro: "Plain-language answers to the questions patients ask us most.", count: 3, buttonLabel: "Explore more articles" },
     { _type: "faqSection", _key: key(), enabled: true, heading: "Frequently asked questions", intro: null, limit: 8 },
     { _type: "visitSection", _key: key(), enabled: true, heading: "Visit us", intro: null },
     {
@@ -679,12 +680,7 @@ export const defaultGallery: Gallery = {
     "procedure-with-assistant", "honour-agrawal-mahasabha", "waiting-area", "school-visit", "dr-neeraj-office", "clinic-facade-lights",
     "procedure-examination", "awards-cabinet-ida", "camp-school-teaching", "treatment-room-wide", "dental-association-meet", "felicitation",
   ),
-  beforeAfter: [
-    // From the clinic's own "Your smile is important for us" flyer.
-    { _key: key(), title: "Crooked teeth straightened", before: { local: { src: "/images/results/braces-before.webp", width: 640, height: 480 } }, after: { local: { src: "/images/results/braces-after.webp", width: 640, height: 480 } } },
-    { _key: key(), title: "Pyorrhea (gum disease) treated", before: { local: { src: "/images/results/pyorrhea-before.webp", width: 640, height: 480 } }, after: { local: { src: "/images/results/pyorrhea-after.webp", width: 640, height: 480 } } },
-    { _key: key(), title: "Missing teeth replaced with a bridge", before: { local: { src: "/images/results/crown-before.webp", width: 640, height: 480 } }, after: { local: { src: "/images/results/crown-after.webp", width: 640, height: 480 } } },
-  ],
+  beforeAfter: [],
 };
 
 export const defaultReviews: Reviews = {
@@ -705,3 +701,244 @@ export const defaultFaqs: Faqs = {
     { _key: key(), question: "At what age should a child first see a dentist?", answer: "Around the first birthday, or when the first tooth appears." },
   ],
 };
+
+/**
+ * Plain text → Portable Text for articles. Blank line = new paragraph.
+ * "## " heading, "### " sub-heading, "> " quote, lines starting "- " a bullet list,
+ * lines starting "1. " a numbered list.
+ */
+function article(text: string): PortableTextBlock[] {
+  const out: PortableTextBlock[] = [];
+  const block = (t: string, style = "normal", list?: "bullet" | "number"): PortableTextBlock => ({
+    _type: "block",
+    _key: key(),
+    style,
+    markDefs: [],
+    ...(list ? { listItem: list, level: 1 } : {}),
+    children: [{ _type: "span", _key: key(), text: t, marks: [] }],
+  });
+  for (const chunk of text.trim().split(/\n\s*\n/)) {
+    const lines = chunk.split("\n").map((l) => l.trim()).filter(Boolean);
+    if (!lines.length) continue;
+    if (lines[0].startsWith("### ")) out.push(block(lines[0].slice(4), "h3"));
+    else if (lines[0].startsWith("## ")) out.push(block(lines[0].slice(3), "h2"));
+    else if (lines[0].startsWith("> ")) out.push(block(lines.map((l) => l.replace(/^>\s*/, "")).join(" "), "blockquote"));
+    else if (lines.every((l) => l.startsWith("- "))) lines.forEach((l) => out.push(block(l.slice(2), "normal", "bullet")));
+    else if (lines.every((l) => /^\d+\.\s/.test(l))) lines.forEach((l) => out.push(block(l.replace(/^\d+\.\s/, ""), "normal", "number")));
+    else out.push(block(lines.join(" ")));
+  }
+  return out;
+}
+
+export const defaultBlogPage: BlogPage = {
+  heading: "Dental insights",
+  intro: "Plain-language answers to the questions patients ask us most, on gums, implants, mouth ulcers, children's teeth and everyday care.",
+  image: photo("operatory-tooth-mural"),
+};
+
+const disclaimer = "This article is general information and does not replace a dental examination. If you have a problem, please get it checked.";
+
+export const defaultBlogPosts: BlogPost[] = [
+  {
+    title: "Dental implant, bridge or denture: which one replaces a missing tooth?",
+    slug: "implant-bridge-or-denture",
+    excerpt: "Three ways to fill a gap, and how they differ in comfort, lifespan and what they ask of the teeth beside them.",
+    cover: photo("dr-neeraj-procedure"),
+    category: "Dental implants",
+    publishedAt: "2026-11-12T09:00:00.000Z",
+    featured: true,
+    treatmentSlug: "dental-implants",
+    body: article(`
+A missing tooth is more than a gap in your smile. The teeth beside it slowly lean into the space, the tooth above or below it grows out of position, and the bone under the gap shrinks because nothing is chewing on it. Replacing the tooth early avoids most of this.
+
+There are three common options.
+
+## Dental implant
+
+An implant is a small titanium post placed in the jawbone where the root was. After a few months the bone grows around it and holds it firmly, and a crown is fixed on top.
+
+- Looks and feels closest to a natural tooth.
+- The teeth next to the gap are not cut down.
+- Keeps the bone in place, because the post is chewed on like a root.
+- Needs a healthy gum and enough bone, so an X-ray check comes first.
+- Takes the longest, usually a few months from start to finish.
+
+## Dental bridge
+
+A bridge joins an artificial tooth to crowns placed on the teeth on either side of the gap, all in one fixed piece.
+
+- Faster than an implant, usually two or three visits.
+- The neighbouring teeth have to be shaved down to carry the crowns.
+- Needs careful cleaning underneath, with floss threaders or a water flosser.
+
+## Removable denture
+
+A denture is a set of artificial teeth you take out at night. It can replace one tooth, several, or a full jaw.
+
+- The most affordable option, and quick to make.
+- Can feel loose over time as the gum and bone change. Two implants in the lower jaw can make a denture far more stable.
+- Needs daily cleaning and a regular fit check.
+
+## How to choose
+
+There is no single best answer. The right option depends on how many teeth are missing, the health of your gums and bone, other medical conditions such as diabetes, whether you smoke, and your budget. A check-up with an X-ray tells your dentist what is possible, and they should explain the options, the number of visits and the cost before anything starts.
+
+${disclaimer}
+`),
+  },
+  {
+    title: "Bleeding gums: what it means and when to see a dentist",
+    slug: "bleeding-gums",
+    excerpt: "Gums that bleed when you brush are a warning sign, not a reason to brush less. Here is what usually causes it and what to do.",
+    cover: photo("procedure-with-assistant"),
+    category: "Gum care",
+    publishedAt: "2026-11-18T09:00:00.000Z",
+    treatmentSlug: "gum-treatment",
+    body: article(`
+Healthy gums do not bleed. If yours bleed when you brush or floss, or look red, swollen or shiny, they are inflamed. That is common, and it is also the earliest sign of gum disease.
+
+## What usually causes it
+
+Plaque is the soft, sticky film that builds up on teeth every day. If it is not cleaned off well, it hardens into tartar along the gum line, and the bacteria in it irritate the gums. Other things that make it worse include smoking, diabetes, pregnancy and some medicines.
+
+## Do not stop brushing
+
+Many people brush the bleeding area less because it hurts or bleeds. That lets more plaque stay, and the gums get worse. Brush gently twice a day with a soft brush, and clean between the teeth once a day. Bleeding from healthy-but-inflamed gums usually settles within one to two weeks of good cleaning.
+
+## Signs you need to see a dentist
+
+- Bleeding that continues after two weeks of careful cleaning.
+- Bad breath or a bad taste that does not go away.
+- Gums pulling back, so teeth look longer.
+- Teeth that feel loose or have started to move.
+- Pus or a swelling on the gum.
+
+## How it is treated
+
+Early gum disease (gingivitis) clears up with a professional cleaning and better home care. When the bone around the teeth is already affected (periodontitis, often called pyorrhea), the dentist cleans below the gum line, and sometimes does minor gum surgery to reach deep pockets. A periodontist is the specialist for this.
+
+The earlier it is treated, the more of your own teeth you keep.
+
+${disclaimer}
+`),
+  },
+  {
+    title: "A mouth ulcer that has not healed in three weeks: what to do",
+    slug: "mouth-ulcer-not-healing",
+    excerpt: "Most mouth ulcers heal in a week or two. One that does not should be checked by a dentist, especially if you use tobacco.",
+    cover: photo("dr-kavita-desk"),
+    category: "Mouth ulcers & oral cancer",
+    publishedAt: "2026-11-05T09:00:00.000Z",
+    treatmentSlug: "oral-medicine",
+    body: article(`
+Almost everyone gets a mouth ulcer now and then. Most are small, painful and gone in a week or two. The ones to take seriously are the ulcers that stay.
+
+## When to get it checked
+
+See a dentist if any of these is true:
+
+- An ulcer or sore has not healed in two to three weeks.
+- A white or red patch inside the mouth that does not rub off.
+- A lump or thickened area in the cheek, tongue or gum.
+- Difficulty or pain in swallowing, or in opening the mouth fully.
+- A tooth that becomes loose for no clear reason.
+- Numbness in the tongue, lip or chin.
+
+Having one of these does not mean it is serious. Most turn out to be something simple, such as a sharp tooth rubbing the cheek or an ill-fitting denture. The point of checking is that if it is serious, finding it early makes treatment far simpler.
+
+## Who should be extra careful
+
+The risk of oral cancer is higher in people who chew tobacco, gutkha, paan or areca nut, smoke, or drink alcohol regularly. If that is you, a mouth check once or twice a year is worth it even when nothing hurts.
+
+## What happens at the visit
+
+The dentist looks at the whole mouth, the tongue and the neck, asks how long the problem has been there, and may take an X-ray. If something looks suspicious, a small sample (biopsy) is sent to the laboratory. A specialist in oral medicine is trained to tell the harmless ulcers from the ones that need more attention.
+
+## Other causes of a sore or burning mouth
+
+A burning feeling in the mouth or tongue, or a dry mouth, can come from vitamin deficiencies, diabetes, acid reflux, some medicines or stress. These can usually be treated once the cause is found.
+
+${disclaimer}
+`),
+  },
+  {
+    title: "Your child's first dental visit: what to expect",
+    slug: "childs-first-dental-visit",
+    excerpt: "The best time is around the first birthday. The first visit is short, and the goal is for your child to feel at home.",
+    cover: photo("dr-kavita-child-patient"),
+    category: "Children's teeth",
+    publishedAt: "2026-10-28T09:00:00.000Z",
+    treatmentSlug: "childrens-dentistry",
+    body: article(`
+Many parents wait until a child complains of pain. By then the visit is often a stressful one. A first visit around the first birthday, or when the first tooth appears, is gentler for everyone.
+
+## What happens
+
+The first visit is short. The dentist shows the chair and the instruments, counts the teeth, checks the gums and bite, and talks to you about brushing, feeding and habits. Treatment is rarely needed at this stage. The aim is for the clinic to become a familiar place.
+
+## How to prepare your child
+
+- Talk about it in a simple, happy way. Avoid words like "pain" or "injection".
+- Do not use the dentist as a threat.
+- Choose a time when your child is rested and fed.
+- Stay calm yourself. Children pick up on worry.
+
+## Milk teeth matter
+
+Milk teeth fall out, but they hold the space for the adult teeth and help your child chew and speak. A decayed milk tooth can cause pain and infection, and can affect the adult tooth waiting underneath.
+
+## Simple habits that protect little teeth
+
+- Start brushing with the first tooth, using a smear of fluoride toothpaste the size of a grain of rice. From age three, a pea-sized amount.
+- Avoid putting a child to sleep with a milk or sugary bottle.
+- Keep sweets and sticky snacks to mealtimes rather than all day.
+- Visit every six months for a check-up. Fluoride and sealants on the chewing surfaces help prevent cavities.
+
+## Thumb-sucking and crowded teeth
+
+Thumb-sucking beyond the age of about four can push the front teeth forward. Ask the dentist early if the habit continues, and about when to check the bite as the adult teeth come in.
+
+${disclaimer}
+`),
+  },
+  {
+    title: "How to brush and floss properly: a simple daily routine",
+    slug: "how-to-brush-and-floss",
+    excerpt: "Two minutes, twice a day, and a few minutes of cleaning between the teeth. A routine that actually protects your gums.",
+    cover: photo("procedure-examination"),
+    category: "Everyday care",
+    publishedAt: "2026-10-20T09:00:00.000Z",
+    treatmentSlug: "scaling-and-cleaning",
+    body: article(`
+Most dental problems begin with plaque that was not cleaned off. A good routine takes less than five minutes a day.
+
+## Brushing
+
+1. Use a soft brush and a fluoride toothpaste, a pea-sized amount.
+2. Hold the brush at a slight angle towards the gum line.
+3. Move in small, gentle circles, not hard back-and-forth scrubbing.
+4. Clean every surface: outside, inside and the chewing surface of each tooth.
+5. Brush for two minutes, morning and before bed.
+6. Brush your tongue lightly too. It helps with bad breath.
+
+Hard brushing does not clean better. It wears the gum and the neck of the tooth, and causes sensitivity.
+
+## Cleaning between the teeth
+
+A brush cannot reach the sides of the teeth, which is where gum disease and cavities between teeth begin. Once a day, clean there with floss or small interdental brushes. If your gums bleed at first, keep going gently. It settles within a week or two as the gums become healthy.
+
+## Other small things that help
+
+- Change your brush every three months, or sooner if the bristles splay.
+- Wait about 30 minutes after acidic food or drinks before brushing.
+- Cut down on sugary snacks between meals.
+- Do not smoke or chew tobacco.
+
+## Why a professional cleaning is still needed
+
+Once plaque hardens into tartar, no amount of brushing removes it. A cleaning at the clinic, usually every six months, removes tartar and stains and gives the dentist a chance to catch a problem early.
+
+${disclaimer}
+`),
+  },
+];

@@ -223,8 +223,14 @@
   & ol {
     margin-top: 1rem;
   }
+  & h2 {
+    @apply font-display mt-12 mb-3 text-[1.75rem] font-medium leading-tight text-ink sm:text-[2rem];
+  }
   & h3 {
     @apply mt-8 mb-2 text-xl font-bold text-ink;
+  }
+  & blockquote {
+    @apply my-8 border-l-2 border-gold-400 bg-gold-50/60 py-4 pr-5 pl-6 font-display text-xl italic leading-snug text-ink;
   }
   & ul {
     @apply list-disc pl-5;

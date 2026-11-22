@@ -133,6 +133,50 @@ export const qa = defineType({
   preview: { select: { title: "question", subtitle: "answer" } },
 });
 
+/** Long-form text for blog posts: headings, lists, quotes and photos. */
+export const articleBody = defineType({
+  name: "articleBody",
+  title: "Article",
+  type: "array",
+  of: [
+    defineArrayMember({
+      type: "block",
+      styles: [
+        { title: "Normal", value: "normal" },
+        { title: "Heading", value: "h2" },
+        { title: "Sub-heading", value: "h3" },
+        { title: "Quote", value: "blockquote" },
+      ],
+      lists: [
+        { title: "Bullets", value: "bullet" },
+        { title: "Numbers", value: "number" },
+      ],
+      marks: {
+        decorators: [
+          { title: "Bold", value: "strong" },
+          { title: "Italic", value: "em" },
+        ],
+        annotations: [
+          defineArrayMember({
+            name: "link",
+            type: "object",
+            title: "Link",
+            fields: [defineField({ name: "href", type: "url", title: "URL", validation: (r) => r.uri({ scheme: ["http", "https", "tel", "mailto"], allowRelative: true }) })],
+          }),
+        ],
+      },
+    }),
+    defineArrayMember({
+      type: "image",
+      options: { hotspot: true },
+      fields: [
+        defineField({ name: "alt", title: "What is in the photo?", type: "string" }),
+        defineField({ name: "caption", title: "Caption (optional)", type: "string" }),
+      ],
+    }),
+  ],
+});
+
 export const videoClip = defineType({
   name: "videoClip",
   title: "Video",
@@ -146,4 +190,4 @@ export const videoClip = defineType({
   preview: { select: { title: "name", subtitle: "caption", media: "poster" }, prepare: ({ title, subtitle, media }) => ({ title: title || "Video", subtitle, media }) },
 });
 
-export const objectTypes = [photo, richText, seo, session, dayHours, step, qa, videoClip];
+export const objectTypes = [photo, richText, articleBody, seo, session, dayHours, step, qa, videoClip];

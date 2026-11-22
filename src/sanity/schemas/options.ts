@@ -62,6 +62,15 @@ export const dayOptions = [
   { title: "Sunday", value: "sun" },
 ];
 
+export const blogCategories = [
+  { title: "Gum care", value: "Gum care" },
+  { title: "Dental implants", value: "Dental implants" },
+  { title: "Oral health", value: "Oral health" },
+  { title: "Children's teeth", value: "Children's teeth" },
+  { title: "Mouth ulcers & oral cancer", value: "Mouth ulcers & oral cancer" },
+  { title: "Everyday care", value: "Everyday care" },
+];
+
 export const galleryCategories = [
   { title: "Clinic", value: "clinic" },
   { title: "Doctors & team", value: "team" },

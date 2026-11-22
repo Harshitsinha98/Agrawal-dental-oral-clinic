@@ -277,6 +277,10 @@ export const homepage = defineType({
         section("ctaSection", "Booking call-to-action", [
           defineField({ name: "buttonLabel", title: "Button text", type: "string" }),
         ]),
+        section("blogSection", "Blog (latest posts)", [
+          defineField({ name: "count", title: "How many posts to show", type: "number", initialValue: 3, validation: (r) => r.min(1).max(6) }),
+          buttonLabel,
+        ]),
         section("videoReviewsSection", "Video reviews", [
           defineField({ name: "videos", title: "Videos", description: "Short phone videos of patients (MP4, under 20 MB each). Only with the patient's permission.", type: "array", of: [defineArrayMember({ type: "videoClip" })] }),
         ]),

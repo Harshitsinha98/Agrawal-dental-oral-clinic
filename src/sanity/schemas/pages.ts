@@ -2,6 +2,7 @@ import { CommentIcon } from "@sanity/icons/Comment";
 import { HelpCircleIcon } from "@sanity/icons/HelpCircle";
 import { ImagesIcon } from "@sanity/icons/Images";
 import { InfoOutlineIcon } from "@sanity/icons/InfoOutline";
+import { BookIcon } from "@sanity/icons/Book";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { galleryCategories } from "./options";
 
@@ -150,4 +151,18 @@ export const faqs = defineType({
     defineField({ name: "items", title: "Questions", type: "array", of: [defineArrayMember({ type: "qa" })] }),
   ],
   preview: { prepare: () => ({ title: "Questions (FAQ)" }) },
+});
+
+export const blogPage = defineType({
+  name: "blogPage",
+  title: "Blog page",
+  type: "document",
+  icon: BookIcon,
+  fields: [
+    defineField({ name: "heading", type: "string", validation: (r) => r.required() }),
+    defineField({ name: "intro", title: "Intro", type: "text", rows: 3 }),
+    defineField({ name: "image", title: "Banner photo", description: "Faint photo behind the heading.", type: "photo" }),
+    defineField({ name: "seo", title: "Google preview", type: "seo" }),
+  ],
+  preview: { prepare: () => ({ title: "Blog page" }) },
 });

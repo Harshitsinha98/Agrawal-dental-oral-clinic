@@ -26,6 +26,8 @@ npm run build
 | Treatments | One document per treatment page: summary, photo, steps, aftercare, FAQs, SEO |
 | Doctors | Photo, degrees, speciality, experience, bio |
 | Gallery & before/after | Photos with categories (drag to reorder), before/after pairs (only shown when "patient has given permission" is ticked) |
+| Blog posts | One document per article: title, page address, summary, cover photo, category, date, author (optional), related treatment, and the article itself (headings, lists, quotes, photos) |
+| Blog page | Heading, intro and banner photo of `/blog` |
 | Patient reviews, Questions | As named |
 | About page | Story, highlights, the "Our journey" timeline, and the headings / booking box on that page |
 
@@ -47,6 +49,7 @@ npm run build
 | `src/app/api/revalidate/` | Webhook that refreshes the site on publish |
 | `src/components/ui/` | Buttons, icons, motion helpers, image component |
 | `src/components/fx/` | Animated effects (aurora, word rotate, marquee, tilt card, timeline, text reveal, border beam), adapted from 21st.dev / Aceternity UI / Magic UI patterns and built on Motion |
+| `src/app/(site)/blog/` | Blog list and article pages |
 | `src/content/photos.ts` | The bundled clinic photo library with descriptions and blur placeholders |
 | `.kiro/steering/ui-ux-pro-max/` | UI/UX Pro Max design skill (installed with `npx uipro-cli init --ai kiro`) |
 

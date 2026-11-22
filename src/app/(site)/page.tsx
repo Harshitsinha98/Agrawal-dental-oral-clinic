@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getDoctors, getFaqs, getGallery, getHomepage, getReviews, getSettings, getTreatments } from "@/lib/content";
+import { getDoctors, getFaqs, getGallery, getHomepage, getPosts, getReviews, getSettings, getTreatments } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 import type { Section as SectionData } from "@/lib/types";
 import * as d from "@/content/defaults";
@@ -16,6 +16,7 @@ import { QuickCards } from "@/components/home/quick-cards";
 import { WhyTrust } from "@/components/home/why-trust";
 import { QuickBooking } from "@/components/home/quick-booking";
 import { LinkTiles } from "@/components/home/link-tiles";
+import { BlogSection } from "@/components/home/blog-section";
 import { TreatmentTiles } from "@/components/treatments/treatment-tiles";
 import { Visit } from "@/components/home/visit";
 import { Cta } from "@/components/home/cta";
@@ -40,7 +41,7 @@ function defaultSection<T extends SectionData["_type"]>(type: T) {
 }
 
 export default async function HomePage() {
-  const [home, settings, treatments, doctors, gallery, reviews, faqs] = await Promise.all([
+  const [home, settings, treatments, doctors, gallery, reviews, faqs, posts] = await Promise.all([
     getHomepage(),
     getSettings(),
     getTreatments(),
@@ -48,6 +49,7 @@ export default async function HomePage() {
     getGallery(),
     getReviews(),
     getFaqs(),
+    getPosts(),
   ]);
 
   const hasVideoReviews = home.sections.some((s) => s._type === "videoReviewsSection" && s.enabled !== false);
@@ -225,6 +227,9 @@ export default async function HomePage() {
             )}
           </Section>
         );
+
+      case "blogSection":
+        return <BlogSection key={section._key} heading={section.heading} intro={section.intro} posts={posts.slice(0, section.count ?? 3)} buttonLabel={section.buttonLabel} />;
 
       case "faqSection": {
         if (!faqs.items.length) return null;
