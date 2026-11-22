@@ -17,6 +17,7 @@ npm run build
 - Until a document is published in Sanity, the site shows the starting content from `src/content/defaults.ts`, so it never renders empty.
 - `npm run seed` copies that starting content into Sanity once, so the doctor opens the Studio to filled-in forms. It needs an Editor token (see below). It never overwrites existing documents unless you pass `--replace`. Use `npm run seed -- --dry` to print the documents without writing anything.
 - Photos are uploaded in the Studio and served from Sanity's image CDN, cropped around the focus point the editor sets. Until a slot is filled in Sanity, the clinic's own photos bundled in `public/images/clinic/` (converted from `/images`) are shown, and patient videos come from `public/videos/`.
+- **To bring Sanity up to date with the website:** `SANITY_API_WRITE_TOKEN=… npm run seed -- --sync`. Documents missing in Sanity are created, documents never edited in the Studio are updated, and documents the clinic has edited (for example the Gallery) are left alone. Run `npm run seed -- --sync --dry` first to see the plan.
 - `npm run seed` uploads those bundled photos and videos to Sanity too. The dataset currently holds test content from setup (a placeholder "Dr. Agrawal", placeholder timings, two test photos in the gallery). To replace it with the real content in one go: `SANITY_API_WRITE_TOKEN=… npm run seed -- --replace`. This overwrites any edits made in the Studio.
 
 | Studio section | Controls |

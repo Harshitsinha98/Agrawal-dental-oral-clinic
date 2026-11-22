@@ -4,8 +4,14 @@
  * filled-in forms.
  *
  *   SANITY_API_WRITE_TOKEN=… npm run seed              # only creates what doesn't exist yet
- *   SANITY_API_WRITE_TOKEN=… npm run seed -- --replace # overwrites (careful: loses Studio edits)
+ *   SANITY_API_WRITE_TOKEN=… npm run seed -- --sync    # brings Sanity up to date, keeping anything edited in the Studio
+ *   SANITY_API_WRITE_TOKEN=… npm run seed -- --replace # overwrites everything (loses Studio edits)
  *   npm run seed -- --dry                              # prints the documents, uploads nothing
+ *   npm run seed -- --sync --dry                       # shows what --sync would create, update and keep
+ *
+ * --sync decides per document: missing → created; still exactly as first seeded (never
+ * edited in the Studio) → updated to the website's current content; edited in the Studio
+ * → left alone and listed, so photos and text the clinic added are never overwritten.
  *
  * The token needs Editor rights: sanity.io/manage → project → API → Tokens → Add API token.
  * Delete the token afterwards if you don't need it again.
@@ -32,6 +38,7 @@ const client = createClient({
 });
 
 const replace = process.argv.includes("--replace");
+const sync = process.argv.includes("--sync");
 let n = 0;
 const key = () => `s${Date.now().toString(36)}${(n++).toString(36)}`;
 
@@ -166,7 +173,25 @@ for (const p of d.defaultBlogPosts) {
 }
 docs.push({ _id: "faqs", _type: "faqs", heading: d.defaultFaqs.heading, items: typed("qa", d.defaultFaqs.items) });
 
-if (!replace && !dry) {
+if (sync) {
+  const rows = await client.fetch<{ _id: string; _createdAt: string; _updatedAt: string }[]>(`*[_id in $ids]{_id, _createdAt, _updatedAt}`, { ids: docs.map((x) => x._id) });
+  const byId = new Map(rows.map((x) => [x._id, x]));
+  const plan = { create: [] as string[], update: [] as string[], keep: [] as string[] };
+  for (let i = docs.length - 1; i >= 0; i--) {
+    const id = docs[i]._id as string;
+    const row = byId.get(id);
+    if (!row) plan.create.unshift(id);
+    else if (row._createdAt === row._updatedAt) plan.update.unshift(id);
+    else {
+      plan.keep.unshift(id);
+      docs.splice(i, 1);
+    }
+  }
+  console.log(`\nSync plan\n  create (${plan.create.length}): ${plan.create.join(", ") || "-"}\n  update (${plan.update.length}): ${plan.update.join(", ") || "-"}\n  keep, edited in the Studio (${plan.keep.length}): ${plan.keep.join(", ") || "-"}\n`);
+  if (dry || !docs.length) process.exit(0);
+}
+
+if (!replace && !sync && !dry) {
   // Without --replace existing documents are kept, so only upload media for the new ones.
   const existing = new Set(await client.fetch<string[]>(`*[_id in $ids]._id`, { ids: docs.map((x) => x._id) }));
   for (let i = docs.length - 1; i >= 0; i--) if (existing.has(docs[i]._id as string)) docs.splice(i, 1);
@@ -193,8 +218,8 @@ if (dry) {
 
 const tx = client.transaction();
 for (const doc of prepared) {
-  if (replace) tx.createOrReplace(doc);
+  if (replace || sync) tx.createOrReplace(doc);
   else tx.createIfNotExists(doc);
 }
 const res = await tx.commit();
-console.log(`${replace ? "Replaced" : "Created"} ${prepared.length} documents (${uploaded.size} files uploaded). Transaction ${res.transactionId}.`);
+console.log(`${replace || sync ? "Wrote" : "Created"} ${prepared.length} documents (${uploaded.size} files uploaded). Transaction ${res.transactionId}.`);
