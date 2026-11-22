@@ -10,6 +10,7 @@ import { defineConfig } from "sanity";
 import { structureTool, type StructureResolver } from "sanity/structure";
 import { ActivityIcon } from "@sanity/icons/Activity";
 import { UsersIcon } from "@sanity/icons/Users";
+import { DocumentTextIcon } from "@sanity/icons/DocumentText";
 import { apiVersion, dataset, projectId, studioBasePath } from "./src/sanity/env";
 import { schemaTypes, singletonTypes } from "./src/sanity/schemas";
 
@@ -26,6 +27,9 @@ const structure: StructureResolver = (S) => {
       S.divider(),
       S.documentTypeListItem("treatment").title("Treatments").icon(ActivityIcon).child(S.documentTypeList("treatment").title("Treatments").defaultOrdering([{ field: "order", direction: "asc" }])),
       S.documentTypeListItem("doctor").title("Doctors").icon(UsersIcon),
+      S.divider(),
+      S.documentTypeListItem("blogPost").title("Blog posts").icon(DocumentTextIcon).child(S.documentTypeList("blogPost").title("Blog posts").defaultOrdering([{ field: "publishedAt", direction: "desc" }])),
+      single("blogPage", "Blog page (heading & intro)"),
       S.divider(),
       single("gallery", "Gallery & before/after"),
       single("reviews", "Patient reviews"),

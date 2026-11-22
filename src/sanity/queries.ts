@@ -41,4 +41,13 @@ export const galleryQuery = defineQuery(`*[_id == "gallery"][0]{
 
 export const reviewsQuery = defineQuery(`*[_id == "reviews"][0]{heading, intro, items, ${SEO}}`);
 
+const POST_CARD = `{_id, title, "slug": slug.current, excerpt, category, publishedAt, featured, "treatmentSlug": treatment->slug.current, cover${IMG}, "author": author->{name, role, photo${IMG}}}`;
+const POST_BODY = `body[]{..., _type == "image" => {..., asset->{_id, url, metadata{lqip, dimensions}}}}`;
+
+export const blogPostsQuery = defineQuery(`*[_type == "blogPost" && defined(slug.current)] | order(publishedAt desc)${POST_CARD}`);
+
+export const blogPostQuery = defineQuery(`*[_type == "blogPost" && slug.current == $slug][0]{..., "slug": slug.current, "treatmentSlug": treatment->slug.current, cover${IMG}, "author": author->{name, role, photo${IMG}}, ${POST_BODY}, ${SEO}}`);
+
+export const blogPageQuery = defineQuery(`*[_id == "blogPage"][0]{..., image${IMG}, ${SEO}}`);
+
 export const faqsQuery = defineQuery(`*[_id == "faqs"][0]{heading, items}`);

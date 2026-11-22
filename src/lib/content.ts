@@ -3,7 +3,7 @@ import { cache } from "react";
 import { fetchSanity } from "@/sanity/client";
 import * as q from "@/sanity/queries";
 import * as d from "@/content/defaults";
-import type { AboutPage, Doctor, Faqs, Gallery, Homepage, Reviews, Section, Settings, Treatment } from "./types";
+import type { AboutPage, BlogPage, BlogPost, Doctor, Faqs, Gallery, Homepage, Reviews, Section, Settings, Treatment } from "./types";
 
 /** Uses the Sanity value unless it is missing or blank, then the default. */
 function merge<T extends object>(fallback: T, doc: Partial<T> | null | undefined): T {
@@ -87,4 +87,19 @@ export const getReviews = cache(async (): Promise<Reviews> => {
 export const getFaqs = cache(async (): Promise<Faqs> => {
   const f = merge(d.defaultFaqs, await fetchSanity<Partial<Faqs>>(q.faqsQuery));
   return { ...f, items: f.items ?? [] };
+});
+
+export const getBlogPage = cache(async (): Promise<BlogPage> => merge(d.defaultBlogPage, await fetchSanity<Partial<BlogPage>>(q.blogPageQuery)));
+
+/** Published posts, newest first. Falls back to the starter articles until the first post is published in Sanity. */
+export const getPosts = cache(async (): Promise<BlogPost[]> => {
+  const docs = await fetchSanity<BlogPost[]>(q.blogPostsQuery);
+  const list = docs?.length ? docs : d.defaultBlogPosts;
+  return [...list].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
+});
+
+export const getPost = cache(async (slug: string): Promise<BlogPost | null> => {
+  const doc = await fetchSanity<BlogPost>(q.blogPostQuery, { slug });
+  if (doc) return doc;
+  return d.defaultBlogPosts.find((p) => p.slug === slug) ?? null;
 });

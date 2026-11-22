@@ -116,7 +116,8 @@ export type Section =
       formText?: string | null;
       buttonLabel?: string | null;
     })
-  | (SectionBase & { _type: "videoReviewsSection"; videos?: Video[] | null });
+  | (SectionBase & { _type: "videoReviewsSection"; videos?: Video[] | null })
+  | (SectionBase & { _type: "blogSection"; count?: number | null; buttonLabel?: string | null });
 
 export type QuickCard = { _key?: string; kind: "rating" | "visit" | "link"; title?: string | null; text?: string | null; buttonLabel?: string | null; link?: string | null };
 export type TrustBox = { _key?: string; title: string; icon?: string | null; points?: string[] | null };
@@ -135,6 +136,25 @@ export type HeroSlide = {
   badge?: string | null;
   badgeText?: string | null;
 };
+
+export type BlogPost = {
+  _id?: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  cover?: Img;
+  category: string;
+  publishedAt: string;
+  featured?: boolean | null;
+  author?: { name: string; role?: string | null; photo?: Img } | null;
+  /** Article text. Headings, lists, quotes and photos. */
+  body?: PortableTextBlock[] | null;
+  /** Treatment page this article leads to, shown as a button at the end. */
+  treatmentSlug?: string | null;
+  seo?: Seo;
+};
+
+export type BlogPage = { heading?: string | null; intro?: string | null; image?: Img; seo?: Seo };
 
 export type Video = { _key?: string; url?: string | null; poster?: Img; name?: string | null; caption?: string | null };
 export type Milestone = { _key?: string; year: string; title: string; text?: string | null };

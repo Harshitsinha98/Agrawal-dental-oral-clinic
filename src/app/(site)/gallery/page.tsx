@@ -24,7 +24,7 @@ export default async function GalleryPage() {
       {g.beforeAfter.length > 0 && (
         <Section tone="white">
           <SectionHeading eyebrow="Results" heading="Before and after" intro="Drag the handle to compare. Shared with each patient's permission; results differ from person to person." />
-          <div className="grid gap-8 md:grid-cols-2">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {g.beforeAfter.map((p) => (
               <BeforeAfterSlider key={p._key} pair={p} />
             ))}
