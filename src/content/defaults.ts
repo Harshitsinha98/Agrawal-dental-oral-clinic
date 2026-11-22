@@ -543,6 +543,7 @@ export const defaultHomepage: Homepage = {
       layout: "tiles",
       buttonLabel: "All treatments",
     },
+    { _type: "beforeAfterSection", _key: key(), enabled: true, heading: "Smiles we've transformed", intro: "Slide to see the difference treatment makes.", note: "Results differ from person to person." },
     {
       _type: "doctorsSection",
       _key: key(),
@@ -619,7 +620,6 @@ export const defaultHomepage: Homepage = {
         { _key: key(), label: "Timings & map", icon: "map", link: "/contact" },
       ],
     },
-    { _type: "beforeAfterSection", _key: key(), enabled: true, heading: "Before and after", intro: null, note: "Photos shared with the patient's permission. Results differ from person to person." },
     { _type: "reviewsSection", _key: key(), enabled: true, heading: "What patients say", intro: null },
     { _type: "faqSection", _key: key(), enabled: true, heading: "Frequently asked questions", intro: null, limit: 8 },
     { _type: "visitSection", _key: key(), enabled: true, heading: "Visit us", intro: null },
@@ -679,7 +679,12 @@ export const defaultGallery: Gallery = {
     "procedure-with-assistant", "honour-agrawal-mahasabha", "waiting-area", "school-visit", "dr-neeraj-office", "clinic-facade-lights",
     "procedure-examination", "awards-cabinet-ida", "camp-school-teaching", "treatment-room-wide", "dental-association-meet", "felicitation",
   ),
-  beforeAfter: [],
+  beforeAfter: [
+    // From the clinic's own "Your smile is important for us" flyer.
+    { _key: key(), title: "Crooked teeth straightened", before: { local: { src: "/images/results/braces-before.webp", width: 640, height: 480 } }, after: { local: { src: "/images/results/braces-after.webp", width: 640, height: 480 } } },
+    { _key: key(), title: "Pyorrhea (gum disease) treated", before: { local: { src: "/images/results/pyorrhea-before.webp", width: 640, height: 480 } }, after: { local: { src: "/images/results/pyorrhea-after.webp", width: 640, height: 480 } } },
+    { _key: key(), title: "Missing teeth replaced with a bridge", before: { local: { src: "/images/results/crown-before.webp", width: 640, height: 480 } }, after: { local: { src: "/images/results/crown-after.webp", width: 640, height: 480 } } },
+  ],
 };
 
 export const defaultReviews: Reviews = {

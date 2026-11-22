@@ -201,9 +201,9 @@ export default async function HomePage() {
         if (!gallery.beforeAfter.length) return null;
         return (
           <Section key={section._key}>
-            <SectionHeading eyebrow="Results" heading={section.heading} intro={section.intro} />
-            <div className="grid gap-8 md:grid-cols-2">
-              {gallery.beforeAfter.slice(0, 4).map((p) => (
+            <SectionHeading eyebrow="Before & after" heading={section.heading} highlight="transformed" intro={section.intro} align="center" />
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {gallery.beforeAfter.slice(0, 6).map((p) => (
                 <BeforeAfterSlider key={p._key} pair={p} />
               ))}
             </div>

@@ -143,7 +143,15 @@ docs.push({
 });
 
 docs.push({ _id: "aboutPage", _type: "aboutPage", ...d.defaultAbout, highlights: typed("highlight", d.defaultAbout.highlights), milestones: typed("milestone", d.defaultAbout.milestones) });
-docs.push({ _id: "gallery", _type: "gallery", heading: d.defaultGallery.heading, intro: d.defaultGallery.intro, photos: d.defaultGallery.photos });
+docs.push({
+  _id: "gallery",
+  _type: "gallery",
+  heading: d.defaultGallery.heading,
+  intro: d.defaultGallery.intro,
+  photos: d.defaultGallery.photos,
+  // The pairs come from the clinic's own published flyer, so they are marked as cleared to show.
+  beforeAfter: d.defaultGallery.beforeAfter.map(({ _key, ...p }) => ({ _key, _type: "beforeAfterPair", ...p, consent: true })),
+});
 docs.push({ _id: "reviews", _type: "reviews", heading: d.defaultReviews.heading, intro: d.defaultReviews.intro });
 docs.push({ _id: "faqs", _type: "faqs", heading: d.defaultFaqs.heading, items: typed("qa", d.defaultFaqs.items) });
 
@@ -160,6 +168,12 @@ if (!replace && !dry) {
 console.log(dry ? "Dry run, nothing is uploaded." : "Uploading photos and videos…");
 const prepared: { _id: string; _type: string }[] = [];
 for (const doc of docs) prepared.push(clean(await media(doc, doc._id === "gallery")) as { _id: string; _type: string });
+// Before/after fields are plain images in the schema, not "photo".
+for (const doc of prepared as Record<string, unknown>[])
+  for (const pair of (doc.beforeAfter as Record<string, Record<string, unknown>>[] | undefined) ?? []) {
+    pair.before._type = "image";
+    pair.after._type = "image";
+  }
 
 if (dry) {
   console.log(JSON.stringify(prepared, null, 2));
